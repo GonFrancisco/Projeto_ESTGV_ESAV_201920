@@ -1,0 +1,724 @@
+<main id="dashboard_tabela" :class="[heroHeightSet ? '' : 'uninitialized']" v-cloak>
+
+  <div class="uk-container uk-container-small sidebar-padding">
+    <ul class="uk-breadcrumb">
+      <li><a href="/dashboard">dashboard</a></li>
+      <li>
+        <a class="" type="button">tabelas</a>
+        <div uk-dropdown>
+          <ul class="uk-nav uk-dropdown-nav">
+            <li><a href="/dashboard/tabela/especies">Espécies</a></li>
+            <li><a href="/dashboard/tabela/imagens">Imagens</a></li>
+            <li><a href="/dashboard/tabela/comentarios">Comentários</a></li>
+            <li><a href="/dashboard/tabela/utilizadores">Utilizadores</a></li>
+          </ul>
+        </div>
+      </li>
+      <li><span><%= nome %></span></li>
+    </ul>
+    <h3>Lista de <%= title %></h3>
+
+    <table id="example1" class="display responsive nowrap uk-table uk-table-hover uk-table-divider uk-table-striped" style="width: 100%">
+      <thead>
+        <tr>
+          <% for (let col of colunas) { %>
+          <th><%=col%></th>
+          <% } %>
+
+        </tr>
+      </thead>
+
+    </table>
+    <!-- <table id="simple" class="uk-table uk-table-hover uk-table-divider uk-table-striped" style="width: 100%">
+        <thead>
+          <tr>
+            <% for (let col of colunas) { %>
+            <th><%=col%></th>
+            <% } %>
+  
+          </tr>
+        </thead>
+  
+      </table> -->
+  </div>
+
+  <% if(familias !== 'undefined') { %>
+  <div id="modal-genero" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <h2 id="modal-titulo" class="uk-modal-title"></h2>
+        <form id="form-criar-genero">
+            <input id="flag" value="0" style="display: none">
+            <div class="uk-margin">
+                <label class="uk-form-label" for="nome">Nome</label>
+                <div class="uk-form-controls">
+                    <input class="uk-input" id="nome" type="text" placeholder="Pinus">
+                </div>
+            </div>
+            <div class="uk-margin">
+                <label class="uk-form-label" for="familia">Familia</label>
+                <div class="uk-form-controls">
+                    <select class="uk-select" id="familia">
+                        <option value="def">Selecionar:</option>
+                        <% for (let fam of familias) { %>
+                            <option value="<%=fam.id%>"><%=fam.id%></option>
+                        <% } %>
+                    </select>
+                </div>
+            </div>
+            
+            <label class="uk-form-label" for="wiki">Link Wikipedia</label>
+            <div class="uk-margin">
+                <textarea oninput='this.style.height = "";this.style.height = this.scrollHeight + 3 + "px"'
+                    name="caracteristicas" class="uk-textarea uk-width-1-1@s" rows="5"
+                    placeholder="Lorem ipsum do..." style="resize: none" maxlength="" id="wiki"></textarea>
+            </div>
+
+        </form>
+        <p class="uk-text-right">
+            <button class="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>
+            <button type="submit" form="form-criar-genero" class="uk-button uk-button-primary"
+                type="button">Confirmar</button>
+        </p>
+    </div>
+    <% } %>
+
+    <% if(ordens !== 'undefined') { %>
+        <div id="modal-familia" uk-modal>
+          <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+              <button class="uk-modal-close-default" type="button" uk-close></button>
+              <h2 id="modal-titulo" class="uk-modal-title"></h2>
+              <form id="form-criar-familia">
+                  <input id="flag" value="0" style="display: none">
+                  <div class="uk-margin">
+                      <label class="uk-form-label" for="nome">Nome</label>
+                      <div class="uk-form-controls">
+                          <input class="uk-input" id="nome" type="text" placeholder="Pinaceae">
+                      </div>
+                  </div>
+                  <div class="uk-margin">
+                      <label class="uk-form-label" for="ordem">Ordem</label>
+                      <div class="uk-form-controls">
+                          <select class="uk-select" id="ordem">
+                              <option value="def">Selecionar:</option>
+                              <% for (let ord of ordens) { %>
+                                  <option value="<%=ord.id%>"><%=ord.id%></option>
+                              <% } %>
+                          </select>
+                      </div>
+                  </div>
+                  
+                  <label class="uk-form-label" for="wiki">Link Wikipedia</label>
+                  <div class="uk-margin">
+                      <textarea oninput='this.style.height = "";this.style.height = this.scrollHeight + 3 + "px"'
+                          name="caracteristicas" class="uk-textarea uk-width-1-1@s" rows="5"
+                          placeholder="Lorem ipsum do..." style="resize: none" maxlength="" id="wiki"></textarea>
+                  </div>
+      
+              </form>
+              <p class="uk-text-right">
+                  <button class="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>
+                  <button type="submit" form="form-criar-familia" class="uk-button uk-button-primary"
+                      type="button">Confirmar</button>
+              </p>
+          </div>
+          <% } %>
+
+          <% if(nome === 'ordens') { %>
+            <div id="modal-ordem" uk-modal>
+              <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+                  <button class="uk-modal-close-default" type="button" uk-close></button>
+                  <h2 id="modal-titulo" class="uk-modal-title"></h2>
+                  <form id="form-criar-ordem">
+                      <input id="flag" value="0" style="display: none">
+                      <div class="uk-margin">
+                          <label class="uk-form-label" for="nome">Nome</label>
+                          <div class="uk-form-controls">
+                              <input class="uk-input" id="nome" type="text" placeholder="Pinales">
+                          </div>
+                      </div>
+                      <div class="uk-margin">
+                        <label class="uk-form-label" for="sclasse">Sub Classe</label>
+                        <div class="uk-form-controls">
+                            <input class="uk-input" id="sclasse" type="text" placeholder="Pinidae">
+                        </div>
+                    </div>
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="classe">Classe</label>
+                        <div class="uk-form-controls">
+                            <input class="uk-input" id="classe" type="text" placeholder="Pinatae">
+                        </div>
+                    </div>
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="sdivisao">Sub Divisão</label>
+                        <div class="uk-form-controls">
+                            <input class="uk-input" id="sdivisao" type="text" placeholder="Coniferophytina">
+                        </div>
+                    </div>
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="divisao">Divisão</label>
+                        <div class="uk-form-controls">
+                            <input class="uk-input" id="divisao" type="text" placeholder="Spermatophyta">
+                        </div>
+                    </div>
+                    <label class="uk-form-label" for="wiki">Link Wikipedia</label>
+                    <div class="uk-margin">
+                        <textarea oninput='this.style.height = "";this.style.height = this.scrollHeight + 3 + "px"'
+                            name="caracteristicas" class="uk-textarea uk-width-1-1@s" rows="5"
+                            placeholder="Lorem ipsum do..." style="resize: none" maxlength="" id="wiki"></textarea>
+                    </div>
+          
+                  </form>
+                  <p class="uk-text-right">
+                      <button class="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>
+                      <button type="submit" form="form-criar-ordem" class="uk-button uk-button-primary"
+                          type="button">Confirmar</button>
+                  </p>
+              </div>
+              <% } %>
+
+              <% if(nome === 'utilizadores') { %>
+                <div id="modal-user" uk-modal>
+                  <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+                      <button class="uk-modal-close-default" type="button" uk-close></button>
+                      <h2 id="modal-titulo" class="uk-modal-title"></h2>
+                      <form id="form-criar-user">
+                          <input id="flag" value="0" style="display: none">
+                          <div class="uk-margin">
+                              <label class="uk-form-label" for="pnome">Primeiro Nome</label>
+                              <div class="uk-form-controls">
+                                  <input class="uk-input" id="pnome" type="text" placeholder="John">
+                              </div>
+                          </div>
+                          <div class="uk-margin">
+                            <label class="uk-form-label" for="unome">Último Nome</label>
+                            <div class="uk-form-controls">
+                                <input class="uk-input" id="unome" type="text" placeholder="Doe">
+                            </div>
+                        </div>
+                        <div class="uk-margin">
+                            <label class="uk-form-label" for="mail">Email</label>
+                            <div class="uk-form-controls">
+                                <input class="uk-input" id="mail" type="text" placeholder="email@email.com">
+                            </div>
+                        </div>
+                        <div class="uk-margin">
+                                <label class="uk-form-label" for="tipo">Tipo de conta</label>
+                                <div class="uk-form-controls">
+                                    <select class="uk-select" id="tipo">
+                                        <option value="def">Selecionar:</option>
+                                        <option value="Normal">Utilizador Comum</option>
+                                        <option value="Administrador">Administrador</option>
+                                    </select>
+                                </div>
+                            </div>
+              
+                      </form>
+                      <p class="uk-text-right">
+                          <button class="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>
+                          <button type="submit" form="form-criar-user" class="uk-button uk-button-primary"
+                              type="button">Confirmar</button>
+                      </p>
+                  </div>
+                  <% } %>
+
+
+
+  <script>
+var data = <%- JSON.stringify(data) %>;
+var nome_tabela = '<%- nome %>';
+$(document).ready(function() {
+    var table = $('#example1').DataTable( {
+        ajax: {
+          url: '/dashboard/tabelas/<%= nome %>/data',
+          cache: true,
+          dataSrc: ""
+        },
+        "columns": data,
+        "oLanguage": {
+          "sLengthMenu": "Mostrar _MENU_ registos",
+          "sSearch": "Filtrar por:",
+          "sInfo": "A mostrar (_START_ a _END_) de <b>_TOTAL_</b> registos",
+          "oPaginate": {
+            "sNext": "Seguinte",
+            "sPrevious": "Anterior"
+            }
+        },
+        dom: '<"top"lBfr>tip',
+                buttons: [
+                    {
+                        text:      '<i class="btn-criar"></i>Criar',
+                        titleAttr: 'Criar',
+                        action: function ( e, dt, node, config ) {
+                            if(nome_tabela == 'generos'){
+                                $('#modal-genero').addClass('uk-open');
+                                $('#modal-genero').show();
+                                $('#flag').val('0');
+                                $('#modal-titulo').html('Criar género');
+                                $("#nome").val('');
+                                $("#familia").val('');
+                                $("#wiki").val('');
+                            } else if(nome_tabela == 'familias') {
+                                $('#modal-familia').addClass('uk-open');
+                                $('#modal-familia').show();
+                                $('#flag').val('0');
+                                $('#modal-titulo').html('Criar família');
+                                $("#nome").val('');
+                                $("#ordem").val('');
+                                $("#wiki").val('');
+                            } else if(nome_tabela == 'ordens') {
+                                $('#modal-ordem').addClass('uk-open');
+                                $('#modal-ordem').show();
+                                $('#flag').val('0');
+                                $('#modal-titulo').html('Criar ordem');
+                                $("#nome").val('');
+                                $("#classe").val('');
+                                $("#divisao").val('');
+                                $("#sclasse").val('');
+                                $("#sdivisao").val('');
+                                $("#wiki").val('');
+                            } else if(nome_tabela == 'utilizadores') {
+                                $('#modal-user').addClass('uk-open');
+                                $('#modal-user').show();
+                                $('#flag').val('0');
+                                $('#modal-titulo').html('Criar utilizador');
+                                $("#pnome").val('');
+                                $("#unome").val('');
+                                $("#mail").val('');
+                                $("#tipo" ).val('def').change();
+                            }
+                        }
+                    },
+                    {
+                        text:      '<i class="btn-editar"></i>Editar',
+                        titleAttr: 'Editar',
+                        action: function ( e, dt, node, config ) {
+
+                            var data = table.rows( { selected: true } ).data()[0];
+
+                            if(nome_tabela == 'generos'){
+                                $('#modal-genero').addClass('uk-open');
+                                $('#modal-genero').show();
+                                $('#flag').val(data.id);
+                                $('#modal-titulo').html('Editar género');
+                                $("#nome").val(data.id);
+                                $("#familia").val(data.familia);
+                                $("#wiki").val(data.wiki_link);
+                            } else if(nome_tabela == 'familias') {
+                                $('#modal-familia').addClass('uk-open');
+                                $('#modal-familia').show();
+                                $('#flag').val(data.id);
+                                $('#modal-titulo').html('Editar família');
+                                $("#nome").val(data.id);
+                                $("#ordem").val(data.ordem);
+                                $("#wiki").val(data.wiki_link);
+                            } else if(nome_tabela == 'ordens') {
+                                $('#modal-ordem').addClass('uk-open');
+                                $('#modal-ordem').show();
+                                $('#flag').val(data.id);
+                                $('#modal-titulo').html('Editar ordem');
+                                $("#nome").val(data.id);
+                                $("#classe").val(data.classe);
+                                $("#divisao").val(data.subclasse);
+                                $("#sclasse").val(data.divisao);
+                                $("#sdivisao").val(data.subdivisao);
+                                $("#wiki").val(data.wiki_link);
+                            } else if(nome_tabela == 'utilizadores') {
+                                $('#modal-user').addClass('uk-open');
+                                $('#modal-user').show();
+                                $('#flag').val(data.id);
+                                $('#modal-titulo').html('Editar utilizador');
+                                $("#pnome").val(data.pnome);
+                                $("#unome").val(data.unome);
+                                $("#mail").val(data.mail);
+                                $("#tipo" ).val(data.isadmin).change();
+                            }
+                        },
+                        enabled: false
+                    },
+                    {
+                        text:      '<i class="btn-apagar"></i>Apagar',
+                        titleAttr: 'Apagar',
+                        action: function ( e, dt, node, config ) {
+                            if(nome_tabela == 'generos'){
+                                let gen = table.rows( { selected: true } ).data()[0];
+                                let tmp = gen.id;
+                                $.ajax({
+                                    type: 'post',
+                                    url: '/apagarGenero',
+                                    data: {
+                                        id: gen.id,
+                                    },
+                                    success: function (response) {
+                                        table.ajax.reload();
+                                        alert('O género ' + tmp + ' foi eliminado com sucesso!');
+                                        return true;
+                                    },
+                                    error: function (response){
+                                        //window.open(JSON.stringify(response))
+                                        //confirm(JSON.stringify(response));
+                                    }
+                                }); 
+                            } else if(nome_tabela == 'familias') {
+                                let fam = table.rows( { selected: true } ).data()[0];
+                                let tmp = fam.id;
+                                $.ajax({
+                                    type: 'post',
+                                    url: '/apagarFamilia',
+                                    data: {
+                                        id: fam.id,
+                                    },
+                                    success: function (response) {
+                                        table.ajax.reload();
+                                        alert('A familia ' + tmp + ' foi eliminada com sucesso!');
+                                        return true;
+                                    },
+                                    error: function (response){
+                                        //window.open(JSON.stringify(response))
+                                        //confirm(JSON.stringify(response));
+                                    }
+                                }); 
+                            } else if(nome_tabela == 'ordens') {
+                                let ord = table.rows( { selected: true } ).data()[0];
+                                let tmp = ord.id;
+                                $.ajax({
+                                    type: 'post',
+                                    url: '/apagarOrdem',
+                                    data: {
+                                        id: ord.id,
+                                    },
+                                    success: function (response) {
+                                        table.ajax.reload();
+                                        alert('A ordem ' + tmp + ' foi eliminada com sucesso!');
+                                        return true;
+                                    },
+                                    error: function (response){
+                                        //window.open(JSON.stringify(response))
+                                        //confirm(JSON.stringify(response));
+                                    }
+                                }); 
+                            } else if(nome_tabela == 'utilizadores') {
+                                let ord = table.rows( { selected: true } ).data()[0];
+                                let tmp = ord.id;
+                                $.ajax({
+                                    type: 'post',
+                                    url: '/apagarUser',
+                                    data: {
+                                        id: ord.id,
+                                    },
+                                    success: function (response) {
+                                        table.ajax.reload();
+                                        alert('O utilizador ' + tmp + ' foi eliminado com sucesso!');
+                                        return true;
+                                    },
+                                    error: function (response){
+                                        //window.open(JSON.stringify(response))
+                                        //confirm(JSON.stringify(response));
+                                    }
+                                }); 
+                            }
+                            
+                        },
+                        enabled: false
+                    },
+                ],
+                select: 'single',
+    } );
+
+
+        table.on( 'select', function () {
+        var selectedRows = table.rows( { selected: true } ).count();
+        table.button( 1 ).enable( selectedRows === 1 );
+        table.button( 2 ).enable( selectedRows === 1 );
+        } );
+        table.on( 'deselect', function () {
+            table.button( 1 ).disable();
+            table.button( 2 ).disable();
+        } );
+
+        $("#form-criar-genero").on("submit", function(e){
+            e.preventDefault();
+
+            if($("#flag").val() === '0'){
+                $.ajax({
+                    type: 'post',
+                    url: '/criarGenero',
+                    data: {
+                        nome: $("#nome").val(),
+                        familia: $("#familia").val(),
+                        wiki: $("#wiki").val()
+                    },
+                    success: function (response) {
+                        let temp = $("#nome").val();
+                        $("#nome").val('');
+                        $("#familia").val('');
+                        $("#wiki").val('');
+                
+                        $('#modal-genero').removeClass('uk-open');
+                        $('#modal-genero').hide();
+                        table.ajax.reload();
+                        alert('O género ' + temp + ' foi criado com sucesso!');
+                        return true;
+                    },
+                    error: function (response){
+                        //window.open(JSON.stringify(response))
+                        //confirm(JSON.stringify(response));
+                    }
+                }); 
+            } else {
+                $.ajax({
+                    type: 'post',
+                    url: '/editarGenero',
+                    data: {
+                        id: $("#flag").val(),
+                        nome: $("#nome").val(),
+                        familia: $("#familia").val(),
+                        wiki: $("#wiki").val()
+                    },
+                    success: function (response) {
+                        let temp = $("#nome").val();
+                        $("#nome").val('');
+                        $("#familia").val('');
+                        $("#wiki").val('');
+                
+                        $('#modal-genero').removeClass('uk-open');
+                        $('#modal-genero').hide();
+                        table.ajax.reload();
+                        alert('O género ' + temp + ' foi alterado com sucesso!');
+                        return true;
+                    },
+                    error: function (response){
+                        //window.open(JSON.stringify(response))
+                        //confirm(JSON.stringify(response));
+                    }
+                }); 
+            }
+            return false;
+        }),
+
+        $("#form-criar-familia").on("submit", function(e){
+            e.preventDefault();
+
+            if($("#flag").val() === '0'){
+                $.ajax({
+                    type: 'post',
+                    url: '/criarFamilia',
+                    data: {
+                        nome: $("#nome").val(),
+                        ordem: $("#ordem").val(),
+                        wiki: $("#wiki").val()
+                    },
+                    success: function (response) {
+                        let temp = $("#nome").val();
+                        $("#nome").val('');
+                        $("#ordem").val('');
+                        $("#wiki").val('');
+                
+                        $('#modal-familia').removeClass('uk-open');
+                        $('#modal-familia').hide();
+                        table.ajax.reload();
+                        alert('A família ' + temp + ' foi criada com sucesso!');
+                        return true;
+                    },
+                    error: function (response){
+                        //window.open(JSON.stringify(response))
+                        //confirm(JSON.stringify(response));
+                    }
+                }); 
+            } else {
+                $.ajax({
+                    type: 'post',
+                    url: '/editarFamilia',
+                    data: {
+                        id: $("#flag").val(),
+                        nome: $("#nome").val(),
+                        ordem: $("#ordem").val(),
+                        wiki: $("#wiki").val()
+                    },
+                    success: function (response) {
+                        let temp = $("#nome").val();
+                        $("#nome").val('');
+                        $("#ordem").val('');
+                        $("#wiki").val('');
+                
+                        $('#modal-familia').removeClass('uk-open');
+                        $('#modal-familia').hide();
+                        table.ajax.reload();
+                        alert('A família ' + temp + ' foi alterada com sucesso!');
+                        return true;
+                    },
+                    error: function (response){
+                        //window.open(JSON.stringify(response))
+                        //confirm(JSON.stringify(response));
+                    }
+                }); 
+            }
+            return false;
+        }),
+
+        $("#form-criar-ordem").on("submit", function(e){
+            e.preventDefault();
+
+            if($("#flag").val() === '0'){
+                $.ajax({
+                    type: 'post',
+                    url: '/criarOrdem',
+                    data: {
+                        nome: $("#nome").val(),
+                        divisao: $("#divisao").val(),
+                        subdivisao: $("#sdivisao").val(),
+                        classe: $("#classe").val(),
+                        subclasse: $("#sclasse").val(),
+                        wiki: $("#wiki").val()
+                    },
+                    success: function (response) {
+                        let temp = $("#nome").val();
+                        $("#nome").val('');
+                        $("#divisao").val('');
+                        $("#sdivisao").val('');
+                        $("#classe").val('');
+                        $("#sclasse").val('');
+                        $("#wiki").val('');
+                
+                        $('#modal-ordem').removeClass('uk-open');
+                        $('#modal-ordem').hide();
+                        table.ajax.reload();
+                        alert('A ordem ' + temp + ' foi criada com sucesso!');
+                        return true;
+                    },
+                    error: function (response){
+                        //window.open(JSON.stringify(response))
+                        //confirm(JSON.stringify(response));
+                    }
+                }); 
+            } else {
+                $.ajax({
+                    type: 'post',
+                    url: '/editarOrdem',
+                    data: {
+                        id: $("#flag").val(),
+                        nome: $("#nome").val(),
+                        divisao: $("#divisao").val(),
+                        subdivisao: $("#sdivisao").val(),
+                        classe: $("#classe").val(),
+                        subclasse: $("#sclasse").val(),
+                        wiki: $("#wiki").val()
+                    },
+                    success: function (response) {
+                        let temp = $("#nome").val();
+                        $("#nome").val('');
+                        $("#divisao").val('');
+                        $("#sdivisao").val('');
+                        $("#classe").val('');
+                        $("#sclasse").val('');
+                        $("#wiki").val('');
+                
+                        $('#modal-ordem').removeClass('uk-open');
+                        $('#modal-ordem').hide();
+                        table.ajax.reload();
+                        alert('A ordem ' + temp + ' foi alterada com sucesso!');
+                        return true;
+                    },
+                    error: function (response){
+                        //window.open(JSON.stringify(response))
+                        //confirm(JSON.stringify(response));
+                    }
+                }); 
+            }
+            return false;
+        }),
+
+        $("#form-criar-user").on("submit", function(e){
+            e.preventDefault();
+
+            if($("#flag").val() === '0'){
+                $.ajax({
+                    type: 'post',
+                    url: '/criarUser',
+                    data: {
+                        pnome: $("#pnome").val(),
+                        unome: $("#unome").val(),
+                        mail: $("#mail").val(),
+                        tipo: $("#tipo").val()
+                        
+                    },
+                    success: function (response) {
+                        let temp = $("#mail").val();
+                        $("#pnome").val();
+                        $("#unome").val();
+                        $("#mail").val();
+                        $("#tipo").val();
+                
+                        $('#modal-user').removeClass('uk-open');
+                        $('#modal-user').hide();
+                        table.ajax.reload();
+                        alert('O utilizador ' + temp + ' foi criado com sucesso!');
+                        return true;
+                    },
+                    error: function (response){
+                        //window.open(JSON.stringify(response))
+                        //confirm(JSON.stringify(response));
+                    }
+                }); 
+            } else {
+                $.ajax({
+                    type: 'post',
+                    url: '/editarUser',
+                    data: {
+                        pnome: $("#pnome").val(),
+                        unome: $("#unome").val(),
+                        mail: $("#mail").val(),
+                        tipo: $("#tipo").val()
+                    },
+                    success: function (response) {
+                        let temp = $("#mail").val();
+                        $("#pnome").val();
+                        $("#unome").val();
+                        $("#mail").val();
+                        $("#tipo").val();
+                
+                        $('#modal-user').removeClass('uk-open');
+                        $('#modal-user').hide();
+                        table.ajax.reload();
+                        alert('O utilizador ' + temp + ' foi alterado com sucesso!');
+                        return true;
+                    },
+                    error: function (response){
+                        //window.open(JSON.stringify(response))
+                        //confirm(JSON.stringify(response));
+                    }
+                }); 
+            }
+            return false;
+        })
+
+    });
+
+
+//     let dataTable = new simpleDatatables.DataTable("#simple", {
+//                 searchable: true,
+//                 fixedHeight: true,
+//                 header: true,
+//                 ajax: '/dashboard/tabelas/<%= nome %>/data',
+//                 labels: {
+//                     placeholder: "Pesquisar...",
+//                     perPage: "Mostrar {select} registos por página",
+//                     noRows: "Sem resultados para apresentar",
+//                     info: "A apresentar {start} a {end} de {rows} registos",
+//                 }
+//             });
+
+// console.log(dataTable.columns())
+    var title;
+    var url;
+    title = 'Tabela de <%= nome %>';
+    url = '/dashboard/tabelas/<%= nome %>'
+    console.log(title);
+    console.log(url);
+    window.history.replaceState({
+      page: "another"
+    }, title, url);
+
+  </script>
+</main>
+<%- /* Expose locals as `window.SAILS_LOCALS` :: */ exposeLocalsToBrowser() %>

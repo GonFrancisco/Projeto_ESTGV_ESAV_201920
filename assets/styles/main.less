@@ -1,0 +1,73 @@
+// Colors
+@global-color: #34421e;
+@global-muted-color: #76885C;
+
+// @global-link-color: #C19434;
+@global-link-color: #9E7111;
+@global-link-hover-color: rgb(82, 57, 5);
+
+// Backgrounds
+@global-background: #FAFAFA;
+@body-background: #F1F1E7;
+@global-primary-background: #34421e;
+
+
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+#page-wrap {
+    flex: 1 0 auto;
+    background-image: linear-gradient(to right bottom, #76885c, #96a17c, #b5bb9e, #d3d5c2, #f1f1e7);
+    display: flex;
+    flex-direction: column;
+}
+
+.uk-h1,
+.uk-h2,
+.uk-h3,
+.uk-h4,
+.uk-h5,
+.uk-h6,
+.uk-heading-2xlarge,
+.uk-heading-large,
+.uk-heading-medium,
+.uk-heading-small,
+.uk-heading-xlarge,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.uk-card-default .uk-card-title,
+p {
+    color: @global-color;
+}
+
+p,
+a,
+.uk-search-input {
+    font-size: 1.25rem;
+}
+
+.uk-h2,
+h2,
+.uk-card-title {
+    font-size: 2.0625rem;
+    line-height: 1;
+}
+
+.sidebar-padding {
+    padding-top: 70px;
+}
+
+.uk-card-opacity {
+    background: rgba(255, 255, 255, 0.2);
+    color: #34421e;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.08);
+    margin-bottom: 20px;
+}

@@ -1,0 +1,46 @@
+<main id="resultados" :class="[heroHeightSet ? '' : 'uninitialized']" v-cloak>
+
+  <div class="uk-container uk-container-small">
+
+    <div class="uk-card uk-card-default uk-width-1-1 uk-card-opacity">
+        <div class="uk-card-header">
+            <h2 class="uk-card-title uk-margin-remove-bottom">Resultados para espécie '<%= result[0].nome %>'</h2>
+        </div>
+        <% for(var i = 0; i < result.length; i++) { %>
+
+          
+            <div class="uk-card uk-card-default uk-grid-collapse uk-child-width-1-2@s uk-margin uk-card-opacity" uk-grid>
+              <div>
+                <div class="uk-card-body">
+                  <img src="/images/main.jpg" alt="">
+                </div>
+              </div>
+              <div>
+                <div class="uk-card-body">
+                  <ul class="uk-list uk-list-divider especie-inline">
+                    <li uk-grid><h4 class="uk-width-1-2">Nome Ciêntifico: </h4><p class="uk-width-1-2"><%= result[i].genero + ' ' + result[i].nome %></p></li>
+                    <li uk-grid><h4 class="uk-width-1-2">Nome Comum: </h4><p class="uk-width-1-2"><%= result[i].nomes_comuns %></p></li>
+                    <li uk-grid><a href="/especie/<%= result[i].genero + '_' + result[i].nome %>">Ver página da espécie</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          
+
+        <% } %>
+
+    </div>
+
+  </div>
+
+  <script>
+    var title;
+    var url;
+    title = 'Resultados: <%= result[0].nome %>';
+    url = '/resultados %>'
+    console.log(title);
+    console.log(url);
+    window.history.replaceState({page: "another"}, title, url);
+  </script>
+</main>
+<%- /* Expose locals as `window.SAILS_LOCALS` :: */ exposeLocalsToBrowser() %>

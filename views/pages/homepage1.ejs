@@ -1,0 +1,164 @@
+<div id="homepage" :class="[heroHeightSet ? '' : 'uninitialized']" v-cloak>
+
+  <script type="text/javascript">
+    <% if (typeof sem_resultado !== 'undefined' && sem_resultado.length > 0) { %>
+      alert('<%= sem_resultado %>');
+      window.location = '/';
+    <% } %>
+
+    <% if (typeof pass_alterada0 !== 'undefined' && pass_alterada0.length > 0) { %>
+        alert("<%= pass_alterada0 %>" + "\n" + "<%= pass_alterada1 %>");
+        window.location = '/logout';
+    <% } %>
+
+
+  </script>
+
+  <div class="uk-container uk-container-small">
+
+    <!--<div class="uk-card uk-card-default" uk-grid>
+        <div class="golden-large">
+            <h2 class="uk-card-title">Quem Somos</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sollicitudin purus sed urna pretium, eget
+                finibus felis bibendum. Nunc vitae ultricies turpis. Pellentesque vitae nibh eu eros viverra maximus.
+                Vivamus varius malesuada urna vel venenatis. Nullam imperdiet, tellus vel venenatis consequat, sapien est
+                fringilla diam, quis tincidunt augue ipsum nec augue.
+            </p>
+        </div>
+        <div class="golden-small">
+            <div class="golden-large-height">
+                <img src="/images/main.jpg" alt="">
+            </div>
+
+        </div>
+    </div>-->
+    <div class="uk-card uk-card-default uk-grid-collapse uk-child-width-1-2@s uk-margin" uk-grid>
+      <div class="uk-card-media-left uk-cover-container">
+        <img src="/images/main.jpg" alt="" uk-cover>
+        <canvas width="600" height="400"></canvas>
+      </div>
+      <div>
+        <div class="uk-card-body">
+          <h2 class="uk-card-title">Quem Somos</h2>
+          <p>Esta plataforma existe de forma a fornecer uma melhor visualização dos registos botânicos da Escola Superior Agrária de Viseu. Sendo uma página académica esforçamos-nos para que a mesma seja rigorosa, mas recomendamos uma verificação de todos os dados antes de os utilizar.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="uk-card uk-card-default uk-width-1-1">
+      <div class="uk-card-header">
+        <h2 class="uk-card-title uk-margin-remove-bottom">Pesquisa de Plantas</h2>
+      </div>
+      <div class="uk-card-body">
+        <div class="uk-margin main-search-container">
+          <form id="my_form" class="uk-search uk-search-default main-search" action="/pesquisa" method="post">
+            <input id="search" name="id" class="uk-search-input" type="search" maxlength="64" placeholder="Search...">
+            <a type="submit" class="uk-search-icon-flip"
+              onclick="document.getElementById('my_form').submit(); return false;" style="cursor: pointer"
+              uk-search-icon></a>
+          </form>
+          <a class="link-pesquisa-avancada" href="">Pesquisa avançada</a>
+        </div>
+
+        <!--<div class="uk-child-width-1-2@s no-30-margin" uk-grid>
+          <a id="btn-explorar" class="uk-button uk-button-default uk-button-large btn-main" href="identificar">Explorar
+            registo de plantas</a>
+          <a id="btn-identificar" class="uk-button uk-button-default uk-button-large btn-main"
+            href="identificar">Identificar planta desconhecida</a>
+        </div>-->
+
+        <div class="uk-child-width-1-1@s no-30-margin" uk-grid>
+            <h3 class="no-find-home" >Não encontrou o que procurava?</h3>
+            <a id="btn-sugerir" class="uk-button uk-button-default uk-button-large btn-main"
+                href="#modal-sugerir" uk-toggle>Sugira novas adições aqui!</a>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="modal-sugerir" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+            <button class="uk-modal-close-default" type="button" uk-close></button>
+            <h2 id="modal-titulo" class="uk-modal-title"></h2>
+            <form id="form-sugerir-adicao">
+                <input id="flag" value="0" style="display: none">
+                <div class="uk-margin">
+                    <label class="uk-form-label" for="nome">Nome:</label>
+                    <div class="uk-form-controls">
+                        <input class="uk-input" id="nome" type="text" placeholder="Pinus">
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <label class="uk-form-label" for="tipo">O que é:</label>
+                    <div class="uk-form-controls">
+                        <select class="uk-select" id="tipo">
+                            <option value="def">Selecionar:</option>
+                            
+                                <option value="especie">Espécie</option>
+                                <option value="genero">Género</option>
+                                <option value="familia">Família</option>
+                                <option value="ordem">Ordem</option>
+
+                        </select>
+                    </div>
+                </div>
+                
+                <label class="uk-form-label" for="wiki">Informação adicional (e.g. Link Wikipedia)</label>
+                <div class="uk-margin">
+                    <textarea oninput='this.style.height = "";this.style.height = this.scrollHeight + 3 + "px"'
+                        name="caracteristicas" class="uk-textarea uk-width-1-1@s" rows="5"
+                        placeholder="Lorem ipsum do..." style="resize: none" maxlength="" id="wiki"></textarea>
+                </div>
+    
+            </form>
+            <p class="uk-text-right">
+                <button class="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>
+                <button type="submit" form="form-criar-genero" class="uk-button uk-button-primary"
+                    type="button">Confirmar</button>
+            </p>
+        </div>
+    </div>
+
+  </div>
+  <script>
+      $( function() {
+        $.widget( "custom.catcomplete", $.ui.autocomplete, {
+          _create: function() {
+            this._super();
+            this.widget().menu( "option", "items", "> :not(.ui-autocomplete-category)" );
+          },
+          _renderMenu: function( ul, items ) {
+            var that = this,
+              currentCategory = "";
+            $.each( items, function( index, item ) {
+              var li;
+              if ( item.category != currentCategory ) {
+                ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
+                currentCategory = item.category;
+              }
+              li = that._renderItemData( ul, item );
+              if ( item.category ) {
+                li.attr( "aria-label", item.category + " : " + item.label );
+              }
+            });
+          }
+        });
+        var data = [];
+
+        <% result.forEach(function(row){ %>
+          data.push(<%-JSON.stringify(row)%>);
+          //console.log('<%-JSON.stringify(row)%>');
+        <% }); %>  
+
+        $( "#search" ).catcomplete({
+          delay: 0,
+          source: data
+        });
+      } );
+      </script>
+</div>
+<%- /* Expose locals as `window.SAILS_LOCALS` :: */ exposeLocalsToBrowser() %>
+
+
+

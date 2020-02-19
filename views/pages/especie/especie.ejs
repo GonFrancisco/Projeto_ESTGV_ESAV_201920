@@ -1,0 +1,422 @@
+<main id="especie" :class="[heroHeightSet ? '' : 'uninitialized']" v-cloak>
+
+    <div class="uk-container uk-container-small">
+        <div class="uk-card uk-card-default uk-card-pages">
+            <div class="uk-card-header" style="border: 0;">
+                <h2><i><%= result.genero + ' ' + result.nome + ' ' + result.sub_especie %></i></h2>
+            </div>
+        </div>
+
+        <div class="uk-margin" uk-grid>
+            <div class="uk-width-1-2@s">
+                <!--uk-width-1-2@s-->
+                <div class="uk-card uk-card-default uk-card-pages uk-card-body img-center" uk-lightbox="animation: slide">
+                    <div class="uk-card-header">
+                        <h3 class="uk-card-title">Galeria</h3>
+                    </div>
+                    <div>
+                        <a href="/images/main.jpg" data-caption="Imagem 1">
+                            <img class="especie-cover" src="/images/galeria/especies/<%= capa %>" alt="">
+                        </a>
+                    </div>
+                    <div class="uk-child-width-1-2@s" uk-grid="masonry: true">
+                        <div>
+                            <a href="/images/mai.jpg" data-caption="Imagem 2">
+                                <img class="uk-card uk-card-default uk-card-pages uk-flex uk-flex-center uk-flex-middle"
+                                    style="max-height: 160px" src="/images/main.jpg" alt="">
+                            </a>
+                        </div>
+                        <div>
+                            <a href="/images/ma.jpg" data-caption="Imagem 3">
+                                <img class="uk-card uk-card-default uk-card-pages uk-flex uk-flex-center uk-flex-middle"
+                                    style="max-height: 160px" src="/images/main.jpg" alt="">
+                            </a>
+                        </div>
+                        <div>
+                            <a uk-icon="icon: album; ratio: 1">Ver todas </a>
+                        </div>
+                        <div>
+                            <a uk-icon="icon: plus-circle; ratio: 1">Adicionar foto </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="uk-width-1-2@s margin-20">
+                <div class="uk-card uk-card-default uk-card-pages uk-card-body">
+                    <div class="uk-card-header titulo-especie">
+                        <h3 class="uk-card-title">Taxonomia</h3>
+                    </div>
+                    <ul class="uk-list uk-list-divider especie-inline">
+                        <li uk-grid>
+                            <h4 class="uk-width-1-2">Divisão: </h4>
+                            <p class="uk-width-1-2"><%= order.rows[0].divisao %></p>
+                        </li>
+                        <li uk-grid>
+                            <h4 class="uk-width-1-2">Sub Divisão: </h4>
+                            <p class="uk-width-1-2"><%= order.rows[0].subdivisao %></p>
+                        </li>
+                        <li uk-grid>
+                            <h4 class="uk-width-1-2">Classe: </h4>
+                            <p class="uk-width-1-2"><%= order.rows[0].classe %></p>
+                        </li>
+                        <li uk-grid>
+                            <h4 class="uk-width-1-2">Sub Classe: </h4>
+                            <p class="uk-width-1-2"><%= order.rows[0].subclasse %></p>
+                        </li>
+                        <li uk-grid>
+                            <h4 class="uk-width-1-2">Ordem: </h4>
+                            <p class="uk-width-1-2"><a
+                                    href="/ordem/<%= order.rows[0].nome %>"><%= order.rows[0].nome %></a>
+                            </p>
+                        </li>
+                        <li uk-grid>
+                            <h4 class="uk-width-1-2">Familia: </h4>
+                            <p class="uk-width-1-2"><a
+                                    href="/familia/<%= familia.rows[0].familia %>"><%= familia.rows[0].familia %></a>
+                            </p>
+                        </li>
+                        <li uk-grid>
+                            <h4 class="uk-width-1-2">Género: </h4>
+                            <p class="uk-width-1-2"><a href="/genero/<%= result.genero %>"><%= result.genero %></a></p>
+                        </li>
+                        <li uk-grid>
+                            <h4 class="uk-width-1-2">Espécie: </h4>
+                            <p class="uk-width-1-2"><i><%= result.genero + ' ' + result.nome %></i></p>
+                        </li>
+                        <li uk-grid style="border: 0">
+                            <h4 class="uk-width-1-2">Nomes Comuns: </h4>
+                            <p class="uk-width-1-2"><%= result.nomes_comuns %></p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="uk-margin" uk-grid uk-height-match="target: > div > .uk-card">
+            <div class="uk-width-3-5@s mb">
+                <div class="uk-card uk-card-default uk-card-pages uk-card-body">
+                    <div class="uk-card-header reduced-padding">
+                        <h3 class="uk-card-title">Características Morfológicas</h3>
+                    </div>
+                    <p><%= result.caracteristicas %></p>
+                </div>
+            </div>
+            <div class="uk-width-2-5@s mb margin-20">
+                <div class="uk-card uk-card-default uk-card-pages uk-card-body">
+                    <div class="uk-card-header">
+                        <h3 class="uk-card-title">Ciclo anual</h3>
+                    </div>
+                    <div class="uk-card-body">
+                        <img class="uk-flex uk-flex-center uk-flex-middle img-ciclo"
+                        src="/images/ciclos/<%= result.imagem_ciclo %>" alt="">
+                        <p class="legenda-ciclo"><span class="color-cicle-flora">Floração</span><span class="color-cicle-fruta">Frutificação</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+      <div class="uk-width-1-1@s mb">
+          <div class="uk-card uk-card-default uk-card-pages uk-card-body">
+              <!--<div class="uk-card-header">
+        <h3 class="uk-card-title">Características Morfológicas</h3>
+      </div>-->
+              <ul class="uk-list uk-list-divider parametros-especie">
+                  <li uk-grid>
+                      <!--<h4 class="uk-width-1-2">Ecologia: </h4>-->
+                      <p class="uk-width-1-2"><span class="parametros-title">Ecologia: </span><%= result.ecologia %></p>
+                  </li>
+                  <li uk-grid>
+                      <!--<h4 class="uk-width-1-2">Origem: </h4>-->
+                      <p class="uk-width-1-2"><span class="parametros-title">Origem: </span><%= result.origem %></p>
+                  </li>
+                  <li uk-grid>
+                      <!--<h4 class="uk-width-1-2">Distribuição: </h4>-->
+                      <p class="uk-width-1-2"><span class="parametros-title">Distribuição: </span><%= result.distribuicao %></p>
+                  </li>
+                  <li uk-grid>
+                      <!--<h4 class="uk-width-1-2">Utilizações: </h4>-->
+                      <p class="uk-width-1-2"><span class="parametros-title">Utilizações: </span><%= result.utilizacoes %></p>
+                  </li>
+                  <li uk-grid>
+                      <!--<h4 class="uk-width-1-2">Observações: </h4>-->
+                      <p class="uk-width-1-2"><span class="parametros-title">Observações: </span><%= result.observacoes %></p>
+                  </li>
+          </div>
+      </div>
+      <div class="to-pdf">
+        <a uk-icon="icon: file-pdf; ratio: 2" id="getpdf-btn" href="" + window.location.href>Guardar em PDF</a>
+        
+      </div>
+      <div class="uk-width-1-1@s comments">
+          <div class="uk-card uk-card-default uk-card-pages uk-card-body">
+              <div class="uk-card-header">
+                  <h3 class="uk-card-title">Comentários</h3>
+              </div>
+              <ul id="lista_comentarios" class="uk-comment-list">
+                  <!--<li class="add-comentario">
+              <form id="form-comentario">
+                <div class="uk-margin">
+                    <textarea oninput='this.style.height = "";this.style.height = this.scrollHeight + 3 + "px"' id="cmt-text" name="comentario" class="uk-textarea uk-width-1-1@s" rows="3" placeholder="Escrever comentário..." style="resize: none" maxlength="255"></textarea>
+                </div>
+              </form>
+              <div class="uk-margin">
+                <button type="submit" form="form-comentario" class="uk-button uk-button-primary btn-publicar-comentario">Publicar</button>
+              </div>
+            </li>-->
+
+
+              </ul>
+          </div>
+      </div>
+      <div id="modal-resposta" uk-modal>
+          <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+              <h2 class="uk-modal-title">Responder</h2>
+              <form id="form-comentario-resposta">
+                  <div class="uk-margin">
+                      <textarea oninput='this.style.height = "";this.style.height = this.scrollHeight + 3 + "px"'
+                          id="cmt-text-resposta" name="comentario" class="uk-textarea uk-width-1-1@s" rows="3"
+                          placeholder="Escrever comentário..." style="resize: none" maxlength="255"></textarea>
+                  </div>
+              </form>
+              <p class="uk-text-right">
+                  <button class="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>
+                  <button type="submit" form="form-comentario-resposta" class="uk-button uk-button-primary"
+                      type="button">Comentar</button>
+              </p>
+          </div>
+      </div>
+      
+      </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        var auth = <%= req.user != undefined %>;
+        var title;
+        var url;
+        var especie = '<%= result.genero + "_" + result.nome %>';
+        var sub = "";
+        <% if (result.sub_especie != "") { %>
+            sub = '<%= result.sub_especie %>';
+            sub = sub.slice(5, -5);
+            console.log(sub);
+            sub = sub.split(' ').join('_')
+            console.log(sub);
+            especie = especie + '_' + sub;
+        <% } %>
+        url = '/especie/' + especie;
+        console.log(title);
+        console.log(url);
+        window.history.replaceState({
+        page: "another"
+        }, title, url);
+
+        
+
+        function reloadComentarios(){
+        $('#lista_comentarios').empty();
+        addPublish();
+        $.ajax({
+            url: '/getComentarios/<%= result.id %>',
+            data: {
+                format: 'json',
+                cache: false
+            },
+            error: function() {
+                $('#info').html('<p>An error has occurred</p>');
+            },
+            dataType: 'json',
+            success: function(data) {
+                //alert('I got the comments');
+                //console.log(data);
+                var t = 1;
+                for(comentario of data){
+                    t = 1 - t;
+                    if(comentario.resposta_a == -1){
+                        $('#lista_comentarios').append(
+                            addComentario(t, comentario)
+                        );
+                        cicleRespostas(t, comentario, data);
+                    }
+                }
+                if(auth){
+                    $('.resp').append(
+                        $('<a>').attr({'class':'uk-link-muted', 'onclick': 'showReplyForm(' + data.num_comentario + ');return false;'})
+                            .append('Responder')
+                    )
+                    .append('<a class="uk-hidden-hover" uk-icon="warning" style="float: right; margin-left: 20px; margin-top: 8px"></a>')
+                    
+                }
+            },
+            type: 'POST'
+        });
+        }
+
+        function addPublish(){
+        if(!auth){
+            $('#lista_comentarios').append(
+            $('<li>').attr({'class': 'login-to-comment'})
+            .append(
+                $('<p>').attr({'class': ''}).append('Por favor faça login para comentar!')
+            ).append($('<div>').attr({'class': 'uk-margin'})
+                .append('<a href="/login">Login</a>')
+            )
+            )                  
+        }
+        if(auth){
+        $('#lista_comentarios').append(
+            $('<li>').attr({'class': 'add-comentario'})
+            .append($('<form>').attr({'id': 'form-comentario'})
+                .append($('<div>').attr({'class': 'uk-margin'})
+                .append($('<textarea>').attr({'oninput': 'this.style.height = "";this.style.height = this.scrollHeight + 3 + "px"',
+                                                'id': 'cmt-text',
+                                                'name': 'comentario',
+                                                'class': 'uk-textarea uk-width-1-1@s',
+                                                'rows': '3',
+                                                'placeholder':  'Escrever comentário...',
+                                                'style':'resize: none',
+                                                'maxlength':'255'
+                                                }))
+                )
+            ).append($('<div>').attr({'class': 'uk-margin'})
+                .append('<button type="submit" form="form-comentario" class="uk-button uk-button-primary btn-publicar-comentario">Publicar</button>')
+            )
+        )
+        }
+        }
+
+        reloadComentarios();
+
+        function addComentario(tipo, data){
+            var primario = 'uk-comment uk-comment-primary uk-visible-toggle';
+            var tipo_comentario = 'uk-comment uk-visible-toggle comentario-normal';
+            if(tipo)
+                tipo_comentario = primario;
+
+            let id = data.num_comentario;
+            id = 'cmt' + id;
+            return $('<li>').attr({'id': id}).append(
+                $('<article>').attr({'class': tipo_comentario,
+                    'tabindex': '-1'}).append(
+                        $('<header>').attr({'class':'uk-comment-header uk-position-relative'})
+                            .append('<div class="uk-grid-medium uk-flex-middle" uk-grid>')
+                                .append($('<div>').attr({'class':'uk-width-expand comment-header'})
+                                    .append($('<h4>').attr({'class':'uk-comment-title uk-margin-remove'})
+                                        .append($('<a>').attr({'class':'uk-link-reset'})
+                                            .append(data.id_utilizador.pnome + ' ' + data.id_utilizador.unome)
+                                        )
+                                    )
+                                    .append($('<p>').attr({'class':'uk-comment-meta uk-margin-remove-top'})
+                                        .append($('<a>').attr({'class':'uk-link-reset'})
+                                            .append(data.data_hora)
+                                        )
+                                    )
+                                )
+                            .append('</div>')
+                            .append(
+                                $('<div>').attr({'class':'uk-position-bottom-right uk-position-small uk-hidden-hover resp'})
+                                    
+                                )
+                            )
+                        .append(
+                            $('<div>').attr({'class':'uk-comment-body'})
+                                .append(
+                                    $('<p>')
+                                        .append(
+                                            data.comentario
+                                        )
+                                )
+                        )
+            );
+        }
+
+        function cicleRespostas(tipo, comentario, data){
+            tipo = 1 - tipo;
+            for(resposta of data){
+                let id = comentario.num_comentario;
+                if(id == resposta.resposta_a){
+                    id = '#cmt' + id;
+                    $(id).append($('<ul>')
+                        .append(
+                        addComentario(tipo, resposta)
+                    ));
+                    cicleRespostas(tipo, resposta, data);
+                }
+            }
+        }
+
+        function submitComentario(reply_to){
+        
+            var comentario_val = "";
+            if(reply_to == -1){
+                comentario_val = $('#cmt-text').val();
+            } else {
+                comentario_val = $('#cmt-text-resposta').val();
+            }
+            var id_especie = '<%= result.id %>';
+            var id_user = null;
+            <% if (req.user) { %>
+                id_user = '<%= req.user.id %>'
+            <% } %>
+            
+            //alert('ola')
+
+            $.ajax({
+                type: 'post',
+                url: '/addComentario',
+                data: {
+                    reply_to: reply_to,
+                    comentario: comentario_val,
+                    id_especie: id_especie,
+                    user_id: id_user
+                },
+                success: function (response) {
+                    $('#cmt-text-resposta').val('');
+                    return true;
+                },
+                error: function (response){
+                    //window.open(JSON.stringify(response))
+                    //confirm(JSON.stringify(response));
+                }
+            }); 
+            //return false;
+        }
+
+        $("#form-comentario").on("submit", function(e){
+            e.preventDefault();
+            console.log(num_comentario_modal);
+            submitComentario(-1);
+            reloadComentarios();
+            return false;
+        })
+
+        var num_comentario_modal = 0;
+
+        function showReplyForm(num_comentario){
+            console.log(num_comentario);
+            num_comentario_modal = num_comentario;
+            console.log(num_comentario_modal);
+            UIkit.modal('#modal-resposta').show();
+
+
+            //$("#form-comentario-resposta").on("submit", function(){
+                //console.log(num_comentario);
+                //submitComentario(num_comentario);
+                //return false;
+            //})
+            //onsubmit="return submitComentario(5)"
+        }
+
+        $("#form-comentario-resposta").on("submit", function(){
+            console.log(num_comentario_modal);
+            submitComentario(num_comentario_modal);
+            UIkit.modal('#modal-resposta').hide();
+            reloadComentarios();
+            return false;
+        })
+
+        console.log(window.location);
+
+        //url: "/getPDF?url=" + window.location.pathname,
+        //$('#getpdf-btn').attr({'href': "/getPDF?url=" + window.location.href});
+
+
+    </script>
+</main>
+<%- /* Expose locals as `window.SAILS_LOCALS` :: */ exposeLocalsToBrowser() %>

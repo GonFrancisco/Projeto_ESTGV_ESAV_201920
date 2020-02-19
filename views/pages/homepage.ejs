@@ -1,0 +1,192 @@
+<main id="homepage" :class="[heroHeightSet ? '' : 'uninitialized']" v-cloak>
+
+  <script type="text/javascript">
+    <% if (typeof sem_resultado !== 'undefined' && sem_resultado.length > 0) { %>
+      alert('<%= sem_resultado %>');
+      window.location = '/';
+    <% } %>
+
+  </script>
+
+  <div class="uk-container uk-container-small" >
+
+    <section class="uk-card uk-card-default uk-width-1-1 uk-card-home">
+      <div class="uk-card-header">
+        <h2 class="uk-card-title uk-margin-remove-bottom">Pesquisa de Plantas</h2>
+      </div>
+      <div class="uk-card-body">
+        <div class="uk-margin main-search-container">
+          <form id="my_form" class="uk-search uk-search-default main-search" action="/pesquisa" method="post">
+            <input id="search" name="id" class="uk-search-input" type="search" maxlength="64" placeholder="Search...">
+            <a type="submit" class="uk-search-icon-flip"
+              onclick="document.getElementById('my_form').submit(); return false;" style="cursor: pointer"
+              uk-search-icon></a>
+          </form>
+          
+        </div>
+        <div class="uk-child-width-1-1@s no-30-margin" id="top-pesquisados" uk-grid>
+            <h4 class="no-find-home uk-first-column">Mais procurados:  </h4>
+            <ul class="top-pesquisados-lista" style="padding-left: 10px;">
+                <li><a>ERRO</a></li>
+                <li><a>ERRO</a></li>
+                <li><a>ERRO</a></li>
+                <li><a>ERRO</a></li>
+            </ul>
+          </div>
+        
+
+      </div>
+    </section>
+
+    <aside uk-grid>
+        <div class="uk-card uk-width-1-2">
+            <div class="uk-card-body uk-card-home">
+                <div class="no-30-margin" uk-grid>
+                    <p class="no-padding">Esta plataforma existe de forma a fornecer uma melhor visualização dos registos botânicos da
+                        Escola
+                        Superior Agrária de Viseu. Sendo uma página académica esforçamos-nos para que a mesma seja
+                        rigorosa,
+                        mas recomendamos uma verificação de todos os dados antes de os utilizar.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="uk-card uk-width-1-2" style="padding-left: 20px; flex: 1">
+            <div class="uk-card-body uk-card-home" style="position: absolute; top: 0; bottom: 0;">
+
+                <div class="no-30-margin center-childs" uk-grid>
+                    <h3 class="no-find-home">Não encontrou o que procurava?</h3>
+                    <a id="btn-sugerir" class="uk-button uk-button-default uk-button-large btn-main"
+                        href="#modal-sugerir" uk-toggle>Sugira novas adições aqui!</a>
+                </div>
+
+            </div>
+        </div>
+    </aside>
+
+    <div id="modal-sugerir" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+            <button class="uk-modal-close-default" type="button" uk-close></button>
+            <h2 id="modal-titulo" class="uk-modal-title"></h2>
+            <form id="form-sugerir-adicao">
+                <input id="flag" value="0" style="display: none">
+                <div class="uk-margin">
+                    <label class="uk-form-label" for="nome">Nome:</label>
+                    <div class="uk-form-controls">
+                        <input name="nome" class="uk-input" id="nome" type="text" placeholder="Pinus">
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <label class="uk-form-label" for="tipo">O que é:</label>
+                    <div class="uk-form-controls">
+                        <select name="tipo" class="uk-select" id="tipo">
+                            <option value="def">Selecionar:</option>
+                            
+                                <option value="especie">Espécie</option>
+                                <option value="genero">Género</option>
+                                <option value="familia">Família</option>
+                                <option value="ordem">Ordem</option>
+
+                        </select>
+                    </div>
+                </div>
+                
+                <label class="uk-form-label" for="info">Informação adicional (e.g. Link Wikipedia)</label>
+                <div class="uk-margin">
+                    <textarea oninput='this.style.height = "";this.style.height = this.scrollHeight + 3 + "px"'
+                        name="info" class="uk-textarea uk-width-1-1@s" rows="5"
+                        placeholder="Lorem ipsum do..." style="resize: none" maxlength="" id="info"></textarea>
+                </div>
+    
+            </form>
+            <p class="uk-text-right">
+                <button class="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>
+                <button onclick="fn_add_sugestao()" class="uk-button uk-button-primary"
+                    type="button">Confirmar</button>
+            </p>
+        </div>
+    </div>
+
+  </div>
+  <script>
+      $( function() {
+        $.widget( "custom.catcomplete", $.ui.autocomplete, {
+          _create: function() {
+            this._super();
+            this.widget().menu( "option", "items", "> :not(.ui-autocomplete-category)" );
+          },
+          _renderMenu: function( ul, items ) {
+            var that = this,
+              currentCategory = "";
+            $.each( items, function( index, item ) {
+              var li;
+              if ( item.category != currentCategory ) {
+                ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
+                currentCategory = item.category;
+              }
+              li = that._renderItemData( ul, item );
+              if ( item.category ) {
+                li.attr( "aria-label", item.category + " : " + item.label );
+              }
+            });
+          }
+        });
+        var data = [];
+
+        <% result.forEach(function(row){ %>
+          data.push(<%-JSON.stringify(row)%>);
+          //console.log('<%-JSON.stringify(row)%>');
+        <% }); %>  
+
+        $( "#search" ).catcomplete({
+          delay: 0,
+          source: data
+        });
+      } );
+
+      var menuId = $( "ul.nav" ).first().attr( "id" );
+        
+      function load_top() {
+
+        $.ajax({
+            type: 'GET',
+            url: '/top',
+            success: function (data) {
+                console.log(data)
+                var listItems = $(".top-pesquisados-lista li");
+                listItems.each(function(idx, li) {
+                    let d = data[idx];
+                    let tmp = d.genero + ' ' + d.nome;
+                    let s = '/especie/' + d.genero + '_' + d.nome;
+                    $(li).html('<a href=' + '/especie/' + d.genero + '_' + d.nome + '>' + tmp + '</a>');
+
+                });
+            },
+            error: function (data) {
+                alert('Ocorreu um erro ao actualizar top de pesquisas.\n\nSe persistir por favor contacte o administrador.');
+            },
+        });
+    }
+
+    load_top();
+
+    function fn_add_sugestao() {
+
+        $.ajax({
+            type: 'POST',
+            url: '/sugerir',
+            data: $('#form-sugerir-adicao').serialize(),
+            success: function (data) {
+                alert('A sua sugestão foi enviada.');
+                location.reload();
+            },
+            error: function (data) {
+                alert('Ocorreu um erro ao enviar a sua sugestão, por favor tente novamente mais tarde.');
+                $('#modal-sugerir').hide();
+            },
+        });
+    }
+
+      </script>
+</main>
+<%- /* Expose locals as `window.SAILS_LOCALS` :: */ exposeLocalsToBrowser() %>

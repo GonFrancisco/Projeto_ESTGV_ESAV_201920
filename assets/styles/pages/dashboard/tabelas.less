@@ -1,0 +1,184 @@
+.uk-table {
+
+    -webkit-box-shadow: inset 0px 0px 0px 1px rgba(255,255,255,1);
+    -moz-box-shadow: inset 0px 0px 0px 1px rgba(255,255,255,1);
+    box-shadow: inset 0px 0px 0px 1px rgba(255,255,255,1);
+    th {
+        color: @global-color;
+        background-color: @global-muted-color;
+    }
+}
+
+.uk-radio:checked, .uk-checkbox:checked, .uk-checkbox:indeterminate {
+    background-color: @global-color;
+}
+
+.uk-radio:focus, .uk-checkbox:focus {
+    border-color: @global-color;
+}
+.uk-radio:checked:focus, .uk-checkbox:checked:focus, .uk-checkbox:indeterminate:focus {
+    background-color: @global-color;
+}
+
+.uk-pagination {
+    font-size: 1.25rem;
+}
+
+.top{
+    display: flex;
+    justify-content: space-between;
+
+    .dt-buttons{
+        font-size: 0.833rem;
+        line-height: normal;
+    }
+}
+
+.btn-criar {
+    background: url('/images/plus.svg') no-repeat center center;
+    filter: invert(54%) sepia(9%) saturate(1277%) hue-rotate(43deg) brightness(93%) contrast(88%);
+    padding: 3px 11px;
+}
+
+.btn-editar {
+    background: url('/images/file-edit.svg') no-repeat center center;
+    filter: invert(54%) sepia(9%) saturate(1277%) hue-rotate(43deg) brightness(93%) contrast(88%);
+    padding: 3px 11px;
+}
+
+.btn-apagar {
+    background: url('/images/trash.svg') no-repeat center center;
+    filter: invert(54%) sepia(9%) saturate(1277%) hue-rotate(43deg) brightness(93%) contrast(88%);
+    padding: 3px 11px;
+}
+
+.dt-button{
+    padding: 3px 0;
+    border-width: 1px;
+    border-color: #76885C;
+    background-color: #F1F1E7;
+    cursor: pointer;
+    color: #34421e;
+    span{
+        padding: 3px 4px 3px 0;
+    }
+}
+
+.row-especie {
+    border-collapse: inherit;
+}
+
+table.dataTable thead .sorting::before, table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::before, table.dataTable thead .sorting_asc::after, table.dataTable thead .sorting_desc::before, table.dataTable thead .sorting_desc::after, table.dataTable thead .sorting_asc_disabled::before, table.dataTable thead .sorting_asc_disabled::after, table.dataTable thead .sorting_desc_disabled::before, table.dataTable thead .sorting_desc_disabled::after {
+
+    position: absolute;
+    bottom: 0.2em;
+    display: block;
+    opacity: 0.3;
+
+}
+
+table.dataTable thead .sorting::before, table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::before, table.dataTable thead .sorting_asc::after, table.dataTable thead .sorting_desc::before, table.dataTable thead .sorting_desc::after, table.dataTable thead .sorting_asc_disabled::before, table.dataTable thead .sorting_asc_disabled::after, table.dataTable thead .sorting_desc_disabled::before, table.dataTable thead .sorting_desc_disabled::after {
+
+    position: absolute;
+    bottom: 0.2rem;
+    display: block;
+    opacity: 0.3;
+    font-size: 2rem;
+
+}
+
+table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after, table.dataTable thead .sorting_desc::after, table.dataTable thead .sorting_asc_disabled::after, table.dataTable thead .sorting_desc_disabled::after {
+
+    right: 0.5rem;
+    content: "\2193";
+}
+
+table.dataTable thead .sorting::before, table.dataTable thead .sorting_asc::before, table.dataTable thead .sorting_desc::before, table.dataTable thead .sorting_asc_disabled::before, table.dataTable thead .sorting_desc_disabled::before {
+
+    right: 1rem;
+    content: "\2191";
+}
+
+button.dt-button, div.dt-button, a.dt-button {
+
+    cursor: pointer;
+    font-size: 0.88em;
+    line-height: 1.6em;
+    white-space: nowrap;
+    color: #34421e;
+}
+
+table.dataTable.display tbody > tr.selected:hover > .sorting_1, table.dataTable.order-column.hover tbody > tr.selected:hover > .sorting_1 {
+
+    background-color: #E5CF6F;
+}
+
+
+.uk-table-hover > tr:hover, .uk-table-hover tbody tr:hover {
+
+    background: #D4BE5E;
+}
+
+table.dataTable.hover tbody > tr.selected:hover, table.dataTable.hover tbody > tr > .selected:hover, table.dataTable.display tbody > tr.selected:hover, table.dataTable.display tbody > tr > .selected:hover {
+
+    background-color: #E5CF6F;
+}
+
+table.dataTable.display tbody > tr.odd.selected > .sorting_1, table.dataTable.order-column.stripe tbody > tr.odd.selected > .sorting_1 {
+
+    background-color: #E5CF6F;
+}
+
+table.dataTable tbody > tr.selected, table.dataTable tbody > tr > .selected {
+
+    background-color: #E5CF6F;
+}
+
+table.dataTable.display tbody > tr.even.selected > .sorting_1, table.dataTable.order-column.stripe tbody > tr.even.selected > .sorting_1 {
+
+    background-color: #E5CF6F;
+}
+
+table.dataTable.stripe tbody > tr.odd.selected, table.dataTable.stripe tbody > tr.odd > .selected, table.dataTable.display tbody > tr.odd.selected, table.dataTable.display tbody > tr.odd > .selected {
+
+    background-color: #E5CF6F;
+}
+
+table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > td:first-child::before, table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > th:first-child::before {
+
+    background: url('/images/plus-circle.svg') no-repeat center center;
+    filter: invert(54%) sepia(9%) saturate(1277%) hue-rotate(43deg) brightness(93%) contrast(88%);
+    cursor: pointer;
+}
+table.dataTable.dtr-inline.collapsed > tbody > tr.parent > td:first-child::before, table.dataTable.dtr-inline.collapsed > tbody > tr.parent > th:first-child::before {
+
+    background: url('/images/minus-circle.svg') no-repeat center center;
+    filter: invert(54%) sepia(9%) saturate(1277%) hue-rotate(43deg) brightness(93%) contrast(88%);
+    cursor: pointer;
+}
+
+table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > td:first-child::before, table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > th:first-child::before {
+
+    top: 16px;
+    left: 3px;
+    height: 25px;
+    width: 25px;
+    display: block;
+    position: absolute;
+    color: white;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    box-sizing: content-box;
+    text-align: center;
+    text-indent: 0 !important;
+    font-family: 'Courier New', Courier, monospace;
+    line-height: 14px;
+    content: '';
+    background-color: transparent;
+
+}
+
+.dtr-data{
+    white-space: break-spaces;
+}

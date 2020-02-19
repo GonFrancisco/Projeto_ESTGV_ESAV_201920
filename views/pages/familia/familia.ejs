@@ -1,0 +1,59 @@
+<main id="familia" :class="[heroHeightSet ? '' : 'uninitialized']" v-cloak>
+
+    <div class="uk-container uk-container-small">
+  
+      <div class="uk-card uk-card-default uk-width-1-1 uk-card-opacity">
+        <div class="uk-card-header">
+          <h2 class="uk-card-title uk-margin-remove-bottom">Família <%= result.id %></h2>
+        </div>
+        <div class="uk-card-body uk-grid-collapse uk-child-width-1-2@s uk-margin" uk-grid>
+          <div class="uk-card-body genero-inline">
+            <h3>Ordem: </h3><a href="/ordem/<%= result.ordem %>"><%= result.ordem %></a>
+          </div>
+
+          <div class="uk-card-body">
+            <h3>Número de espécies registadas: <%= especies.length %></h3>
+            <h3>Número de géneros registados: <%= genes.length %></h3>
+          </div>
+        </div>
+      </div>
+  
+          <% for(var i = 0; i < especies.length; i++) { %>
+  
+            
+              <div class="uk-card uk-card-default uk-grid-collapse uk-child-width-1-2@s uk-margin uk-card-opacity" uk-grid>
+                <div>
+                  <div class="uk-card-body">
+                    <img src="/images/main.jpg" alt="">
+                  </div>
+                </div>
+                <div class="lista-especies-card-container">
+                  <div class="uk-card-body">
+                    <ul class="uk-list uk-list-divider especie-inline">
+                      <li uk-grid><h4 class="uk-width-1-2">Género: </h4><p class="uk-width-1-2"><a href="/genero/<%= especies[i].genero %>"><%= especies[i].genero %></a></p></li>
+                      <li uk-grid><h4 class="uk-width-1-2">Nome Ciêntifico: </h4><p class="uk-width-1-2"><%= especies[i].genero + ' ' + especies[i].nome %></p></li>
+                      <li uk-grid><h4 class="uk-width-1-2">Nome Comum: </h4><p class="uk-width-1-2"><%= especies[i].nomes_comuns %></p></li>
+                    </ul>
+                    <a href="/especie/<%= especies[i].genero + '_' + especies[i].nome %>">Ver página da espécie</a>
+                  </div>
+                </div>
+              </div>
+            
+  
+          <% } %>
+  
+  
+    </div>
+  
+    <script>
+      var title;
+      var url;
+      title = '<%= result.id %>';
+      url = '/familia/<%= result.id %>'
+      console.log(title);
+      console.log(url);
+      window.history.replaceState({page: "another"}, title, url);
+    </script>
+  </main>
+  <%- /* Expose locals as `window.SAILS_LOCALS` :: */ exposeLocalsToBrowser() %>
+  

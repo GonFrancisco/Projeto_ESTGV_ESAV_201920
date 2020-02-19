@@ -1,0 +1,104 @@
+<main id="ordem" :class="[heroHeightSet ? '' : 'uninitialized']" v-cloak>
+
+  <div class="uk-container uk-container-small">
+
+    <div class="uk-card uk-card-default uk-width-1-1 uk-card-opacity">
+      <div class="uk-card-header">
+        <h2 class="uk-card-title uk-margin-remove-bottom">Ordem <%= result.id %></h2>
+      </div>
+      <div class="uk-card-body uk-grid-collapse uk-child-width-1-2@s uk-margin" uk-grid>
+
+        <div class="uk-card-body genero-inline">
+          <ul class="uk-list uk-list-divider especie-inline lista-ordem">
+            <li uk-grid>
+              <h4 class="uk-width-1-2">Divisão: </h4>
+              <p class="uk-width-1-2"><%= result.divisao %></p>
+            </li>
+            <li uk-grid>
+              <h4 class="uk-width-1-2">Sub Divisão: </h4>
+              <p class="uk-width-1-2"><%= result.subdivisao %></p>
+            </li>
+            <li uk-grid>
+              <h4 class="uk-width-1-2">Classe: </h4>
+              <p class="uk-width-1-2"><%= result.classe %></p>
+            </li>
+            <li uk-grid>
+              <h4 class="uk-width-1-2">Sub Classe: </h4>
+              <p class="uk-width-1-2"><%= result.subclasse %></p>
+            </li>
+          </ul>
+        </div>
+
+        <div class="uk-card-body">
+          <ul class="uk-list uk-list-divider especie-inline lista-ordem">
+            <li uk-grid>
+              <h3>Famílias registadas: <%= familias.length %></h3>
+            </li>
+            <li uk-grid>
+              <h3>Géneros registadas: <%= genes.length %></h3>
+            </li>
+            <li uk-grid>
+              <h3>Espécies registadas: <%= especies.length %></h3>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+
+    <% for(var i = 0; i < especies.length; i++) { %>
+
+
+    <div class="uk-card uk-card-default uk-grid-collapse uk-child-width-1-2@s uk-margin uk-card-opacity" uk-grid>
+      <div>
+        <div class="uk-card-body">
+          <img src="/images/main.jpg" alt="">
+        </div>
+      </div>
+      <div class="lista-especies-card-container">
+        <div class="uk-card-body">
+          <ul class="uk-list uk-list-divider especie-inline">
+            <li uk-grid>
+              <h4 class="uk-width-1-2">Família: </h4>
+              <p class="uk-width-1-2"><a href="/familia/<%= especies[i].familia %>"><%= especies[i].familia %></a></p>
+            </li>
+            <li uk-grid>
+              <h4 class="uk-width-1-2">Género: </h4>
+              <p class="uk-width-1-2"><a href="/genero/<%= especies[i].genero %>"><%= especies[i].genero %></a></p>
+            </li>
+            <li uk-grid>
+              <h4 class="uk-width-1-2">Nome Ciêntifico: </h4>
+              <p class="uk-width-1-2"><%= especies[i].genero + ' ' + especies[i].nome %></p>
+            </li>
+            <li uk-grid>
+              <h4 class="uk-width-1-2">Nome Comum: </h4>
+              <p class="uk-width-1-2"><%= especies[i].nomes_comuns %></p>
+            </li>
+          </ul>
+          <a href="/especie/<%= especies[i].genero + '_' + especies[i].nome %>">Ver página da espécie</a>
+        </div>
+      </div>
+    </div>
+
+
+    <% } %>
+
+
+
+  </div>
+
+  <script>
+    var title;
+    var url;
+    title = '<%= result.id %>';
+    url = '/ordem/<%= result.id %>'
+    console.log(title);
+    console.log(url);
+    window.history.replaceState({
+      page: "another"
+    }, title, url);
+
+  </script>
+</main>
+<%- /* Expose locals as `window.SAILS_LOCALS` :: */ exposeLocalsToBrowser() %>

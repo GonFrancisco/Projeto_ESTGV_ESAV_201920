@@ -1,0 +1,171 @@
+@import '../../main.less';
+
+.uk-card-pages {
+    background: rgba(255,255,255,0.15);
+    color: #34421e;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+
+.img-center {
+  text-align: center;
+  a {
+    color: @global-link-color;
+    font-size: 1.25rem;
+  }
+  a:hover {
+    color: #523905;
+  }
+}
+
+.especie-cover{
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.uk-card-header {
+  margin-bottom: 20px;
+  h2{
+      font-size: 2.5rem;
+  }
+}
+
+.margin-20 {
+    padding-left: 20px;
+}
+
+.especie-inline {
+    > li:nth-child(n+2) {
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 0;
+    }
+    li {
+        margin-left: 0px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #e5e5e5;
+    }
+  h4,
+  p {
+    display: inline;
+    padding-left: 20px;
+  }
+    margin-left: 0px;
+}
+
+.parametros-especie li {
+      margin-left: 0px;
+      p {
+          padding-left: 20px;
+      }
+  }
+
+.to-pdf {
+  width: 100%;
+  text-align: right;
+  a {
+    font-size: 1.25rem;
+    margin-bottom: 20px;
+    margin-right: 40px;
+    color: darkred;
+  }
+}
+
+.parametros-especie{
+    .parametros-title{
+        color: @global-link-color;
+    }
+    .parametros-title, p{
+        width: auto;
+        margin-top: 0px;
+    }
+}
+
+.img-ciclo {
+    margin: 0 auto;
+}
+
+.uk-comment-primary {
+    padding: 1rem;
+    background-color: #F1F1E7;
+}
+
+.uk-comment-list .uk-comment ~ ul {
+    margin: 70px 0 0 0;
+    padding-left: 1rem;
+    list-style: none;
+}
+
+.comment-header{
+    h4 {
+        display: inline;
+    }
+    p {
+        display: inline;
+        margin-left: 20px;
+    }
+}
+
+.btn-publicar-comentario {
+    width: 170px;
+    float: right;
+}
+
+.add-comentario{
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 60px;
+}
+
+.comentario-normal {
+    border: 1px solid #e8e8d7;
+    padding: 1rem;
+}
+
+.uk-comment-list .uk-comment ~ ul {
+    margin: 20px 0 0 0;
+    padding-left: 1rem;
+    list-style: none;
+}
+
+.uk-comment-list > :nth-child(n+2) {
+    margin-top: 40px;
+}
+
+.login-to-comment{
+  text-align: center;
+}
+
+.mb{
+    margin-bottom: 20px;
+}
+
+.comments{
+    margin-bottom: 20px;
+}
+
+.reduced-padding {
+    padding: 20px;
+}
+
+.legenda-ciclo {
+
+    span:after {
+        content: "";
+        display: inline-block;
+        width: 23px;
+        vertical-align: sub;
+        height: 23px;
+        border-radius: 50%;
+        margin-left: 10px;
+        border: 2px solid #34421e;
+    }
+
+    .color-cicle-flora:after {
+        background: #FFC000;
+        margin-right: 20px;
+    }
+
+    .color-cicle-fruta:after {
+        background: #22E702;
+    }
+}

@@ -1,0 +1,443 @@
+<main id="dashboard_tabela" :class="[heroHeightSet ? '' : 'uninitialized']" v-cloak>
+
+        <div class="uk-container uk-container-small sidebar-padding">
+            <ul class="uk-breadcrumb">
+                <li><a href="/dashboard">dashboard</a></li>
+                <li>
+                    <a class="" type="button">tabelas</a>
+                    <div uk-dropdown>
+                        <ul class="uk-nav uk-dropdown-nav">
+                            <li><a href="/dashboard/tabela/especies">Espécies</a></li>
+                            <li><a href="/dashboard/tabela/imagens">Imagens</a></li>
+                            <li><a href="/dashboard/tabela/comentarios">Comentários</a></li>
+                            <li><a href="/dashboard/tabela/utilizadores">Utilizadores</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li><span><%= nome %></span></li>
+            </ul>
+            <h3>Lista de Espécies</h3>
+            <table id="example1" class="display responsive nowrap uk-table uk-table-hover uk-table-divider uk-table-striped" style="width: 100%">
+                <thead>
+                  <tr>
+                    <% for (let col of colunas) { %>
+                    <th><%=col%></th>
+                    <% } %>
+          
+                  </tr>
+                </thead>
+          
+              </table>
+        </div>
+
+
+
+
+
+        <div id="modal-criar" uk-modal>
+            <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+                <button class="uk-modal-close-default" type="button" uk-close></button>
+                <h2 id="modal-titulo" class="uk-modal-title"></h2>
+                <form id="form-criar">
+                    <input id="flag" value="0" style="display: none">
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="nome">Espécie</label>
+                        <div class="uk-form-controls">
+                            <input class="uk-input" id="nome" type="text" placeholder="Pinaster">
+                        </div>
+                        <label class="uk-form-label" for="sub">Sub Espécie</label>
+                        <div class="uk-form-controls">
+                            <input class="uk-input" id="sub" type="text" placeholder="'Crimson King'">
+                        </div>
+                    </div>
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="genero">Género</label>
+                        <div class="uk-form-controls">
+                            <select class="uk-select" id="genero">
+                                <option value="def">Selecionar:</option>
+                                <% for (let gen of generos) { %>
+                                    <option value="<%=gen.id%>"><%=gen.id%></option>
+                                <% } %>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <ul uk-accordion>
+                        <li>
+                            <a class="uk-accordion-title" href="#">Nomes Comuns</a>
+                            <div class="uk-margin uk-accordion-content">
+                                <div class="uk-form-controls">
+                                    <input class="uk-input" type="text" placeholder="Pinaster" id="nomes_comuns">
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <a class="uk-accordion-title" href="#">Características</a>
+                            <div class="uk-margin uk-accordion-content">
+                                <textarea oninput='this.style.height = "";this.style.height = this.scrollHeight + 3 + "px"'
+                                    id="caracteristicas" name="caracteristicas" class="uk-textarea uk-width-1-1@s" rows="5"
+                                    placeholder="Lorem ipsum do..." style="resize: none" maxlength=""></textarea>
+                            </div>
+                        </li>
+                        <li>
+                            <a class="uk-accordion-title" href="#">Ecologia</a>
+                            <div class="uk-margin uk-accordion-content">
+                                <textarea oninput='this.style.height = "";this.style.height = this.scrollHeight + 3 + "px"'
+                                    name="caracteristicas" class="uk-textarea uk-width-1-1@s" rows="5"
+                                    placeholder="Lorem ipsum do..." style="resize: none" maxlength="" id="ecologia"></textarea>
+                            </div>
+                        </li>
+                        <li>
+                            <a class="uk-accordion-title" href="#">Origem</a>
+                            <div class="uk-margin uk-accordion-content">
+                                <textarea oninput='this.style.height = "";this.style.height = this.scrollHeight + 3 + "px"'
+                                    name="caracteristicas" class="uk-textarea uk-width-1-1@s" rows="5"
+                                    placeholder="Lorem ipsum do..." style="resize: none" maxlength="" id="origem"></textarea>
+                            </div>
+                        </li>
+                        <li>
+                            <a class="uk-accordion-title" href="#">Distribuição</a>
+                            <div class="uk-margin uk-accordion-content">
+                                <textarea oninput='this.style.height = "";this.style.height = this.scrollHeight + 3 + "px"'
+                                    name="caracteristicas" class="uk-textarea uk-width-1-1@s" rows="5"
+                                    placeholder="Lorem ipsum do..." style="resize: none" maxlength="" id="dist"></textarea>
+                            </div>
+                        </li>
+                        <li>
+                            <a class="uk-accordion-title" href="#">Utilizações</a>
+                            <div class="uk-margin uk-accordion-content">
+                                <textarea oninput='this.style.height = "";this.style.height = this.scrollHeight + 3 + "px"'
+                                    name="caracteristicas" class="uk-textarea uk-width-1-1@s" rows="5"
+                                    placeholder="Lorem ipsum do..." style="resize: none" maxlength="" id="util"></textarea>
+                            </div>
+                        </li>
+                        <li>
+                            <a class="uk-accordion-title" href="#">Observações</a>
+                            <div class="uk-margin uk-accordion-content">
+                                <textarea oninput='this.style.height = "";this.style.height = this.scrollHeight + 3 + "px"'
+                                    name="caracteristicas" class="uk-textarea uk-width-1-1@s" rows="5"
+                                    placeholder="Lorem ipsum do..." style="resize: none" maxlength="" id="obs"></textarea>
+                            </div>
+                        </li>
+                        <li>
+                            <a class="uk-accordion-title" href="#">Link Wikipedia</a>
+                            <div class="uk-margin uk-accordion-content">
+                                <textarea oninput='this.style.height = "";this.style.height = this.scrollHeight + 3 + "px"'
+                                    name="caracteristicas" class="uk-textarea uk-width-1-1@s" rows="5"
+                                    placeholder="Lorem ipsum do..." style="resize: none" maxlength="" id="wiki"></textarea>
+                            </div>
+                        </li>
+                        <li>
+                            <a class="uk-accordion-title" href="#">Referências</a>
+                            <div class="uk-margin uk-accordion-content">
+                                <textarea oninput='this.style.height = "";this.style.height = this.scrollHeight + 3 + "px"'
+                                    name="caracteristicas" class="uk-textarea uk-width-1-1@s" rows="5"
+                                    placeholder="Lorem ipsum do..." style="resize: none" maxlength="" id="ref"></textarea>
+                            </div>
+                        </li>
+                    </ul>
+                </form>
+                <p class="uk-text-right">
+                    <button class="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>
+                    <button type="submit" form="form-criar" class="uk-button uk-button-primary"
+                        type="button">Confirmar</button>
+                </p>
+            </div>
+        </div>
+    <script>
+        
+        // function format ( d ) {
+        //     // `d` is the original data object for the row
+        //     return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+        //         '<tr>'+
+        //             '<td>Características:</td>'+
+        //             '<td>'+d.caracteristicas+'</td>'+
+        //         '</tr>'+
+        //         '<tr>'+
+        //             '<td>Nomes comuns:</td>'+
+        //             '<td>'+d.nomes_comuns+'</td>'+
+        //         '</tr>'+
+        //         '<tr>'+
+        //             '<td>Ciclo anual:</td>'+
+        //             '<td>'+d.imagem_ciclo+'</td>'+
+        //         '</tr>'+
+        //         '<tr>'+
+        //             '<td>Link Wikipedia:</td>'+
+        //             '<td>'+d.wiki_link+'</td>'+
+        //         '</tr>'+
+        //         '<tr>'+
+        //             '<td>Ecologia:</td>'+
+        //             '<td>'+d.ecologia+'</td>'+
+        //         '</tr>'+
+        //         '<tr>'+
+        //             '<td>Origem:</td>'+
+        //             '<td>'+d.origem+'</td>'+
+        //         '</tr>'+
+        //         '<tr>'+
+        //             '<td>Distribuição:</td>'+
+        //             '<td>'+d.distribuicao+'</td>'+
+        //         '</tr>'+
+        //         '<tr>'+
+        //             '<td>Utilizações:</td>'+
+        //             '<td>'+d.utilizacoes+'</td>'+
+        //         '</tr>'+
+        //         '<tr>'+
+        //             '<td>Observações:</td>'+
+        //             '<td>'+d.observacoes+'</td>'+
+        //         '</tr>'+
+        //         '<tr>'+
+        //             '<td>Referências:</td>'+
+        //             '<td>'+d.referencias+'</td>'+
+        //         '</tr>'+
+        //     '</table>';
+        // }
+        var data = <%- JSON.stringify(data) %>;
+        var nome_tabela = '<%- nome %>';
+        $(document).ready(function() {
+            var table = $('#example1').DataTable( {
+                ajax: {
+                    url: '/dashboard/tabelas/especies/data',
+                    cache: true,
+                    dataSrc: ""
+                },
+                "columns": data,
+                "oLanguage": {
+                "sLengthMenu": "Mostrar _MENU_ registos",
+                "sSearch": "Filtrar por:",
+                "sInfo": "A mostrar (_START_ a _END_) de <b>_TOTAL_</b> registos",
+                "oPaginate": {
+                    "sNext": "Seguinte",
+                    "sPrevious": "Anterior"
+                    }
+                },
+                dom: '<"top"lBfr>tip',
+                buttons: [
+                    {
+                        text:      '<i class="btn-criar"></i>Criar',
+                        titleAttr: 'Criar',
+                        action: function ( e, dt, node, config ) {
+                            //UIkit.modal('#modal-criar').show();
+                            $('#modal-criar').addClass('uk-open');
+                            $('#modal-criar').show();
+                            $('#flag').val('0');
+                            $('#modal-titulo').html('Criar espécie');
+                            $("#nome").val('');
+                            $("#sub").val('');
+                            $("#genero" ).val('def').change();
+                            $("#nomes_comuns").val('');
+                            $("#caracteristicas").val('');
+                            $("#ecologia").val('');
+                            $("#origem").val('');
+                            $("#dist").val('');
+                            $("#util").val('');
+                            $("#obs").val('');
+                            $("#ref").val('');
+                            $("#wiki").val('');
+                        }
+                    },
+                    {
+                        text:      '<i class="btn-editar"></i>Editar',
+                        titleAttr: 'Editar',
+                        action: function ( e, dt, node, config ) {
+
+                            var data = table.rows( { selected: true } ).data()[0];
+
+                            $('#modal-criar').addClass('uk-open');
+                            $('#modal-criar').show();
+                            $('#flag').val(data.id);
+                            $('#modal-titulo').html('Editar espécie');
+
+                            
+
+                            $("#nome").val('');
+                            $("#sub").val('');
+                            $("#genero" ).val('def').change();
+                            $("#nomes_comuns").val('');
+                            $("#caracteristicas").val('');
+                            $("#ecologia").val('');
+                            $("#origem").val('');
+                            $("#dist").val('');
+                            $("#obs").val('');
+                            $("#util").val('');
+                            $("#ref").val('');
+                            $("#wiki").val('');
+
+                            if(data.nome != '')
+                            $("#nome").val(data.nome);
+                            if(data.sub_especie != '')
+                            $("#sub").val(data.sub_especie);
+                            if(data.genero != '')
+                            $("#genero" ).val(data.genero).change();
+                            if(data.nomes_comuns != '')
+                            $("#nomes_comuns").val(data.nomes_comuns);
+                            if(data.caracteristicas != '')
+                            $("#caracteristicas").val(data.caracteristicas);
+                            if(data.ecologia != '')
+                            $("#ecologia").val(data.ecologia);
+                            if(data.origem != '')
+                            $("#origem").val(data.origem);
+                            if(data.distribuicao != '')
+                            $("#dist").val(data.distribuicao);
+                            if(data.utilizacoes != '')
+                            $("#util").val(data.utilizacoes);
+                            if(data.observacoes != '')
+                            $("#obs").val(data.observacoes);
+                            if(data.referencias != '')
+                            $("#ref").val(data.referencias);
+                            if(data.wiki_link != '')
+                            $("#wiki").val(data.wiki_link);
+
+                            console.log(table.rows( { selected: true } ).data());
+                            //alert( 'Activated!' );
+                            //this.disable(); // disable button
+                        },
+                        enabled: false
+                    },
+                    {
+                        text:      '<i class="btn-apagar"></i>Apagar',
+                        titleAttr: 'Apagar',
+                        action: function ( e, dt, node, config ) {
+                            $.ajax({
+                                type: 'post',
+                                url: '/apagarEspecie',
+                                data: {
+                                    id: table.rows( { selected: true } ).data()[0].id,
+                                },
+                                success: function (response) {
+                                    table.ajax.reload();
+                                    alert('A espécie foi eliminada com sucesso!');
+                                    return true;
+                                },
+                                error: function (response){
+                                    //window.open(JSON.stringify(response))
+                                    //confirm(JSON.stringify(response));
+                                }
+                            }); 
+                        },
+                        enabled: false
+                    },
+                ],
+                select: 'single'
+            } );
+             
+            
+            table.on( 'select', function () {
+                var selectedRows = table.rows( { selected: true } ).count();
+                table.button( 1 ).enable( selectedRows === 1 );
+                table.button( 2 ).enable( selectedRows === 1 );
+            } );
+            table.on( 'deselect', function () {
+                table.button( 1 ).disable();
+                table.button( 2 ).disable();
+            } );
+
+            $("#form-criar").on("submit", function(e){
+                e.preventDefault();
+                //console.log('front end ' + $("#nome").val());
+                if($("#flag").val() === '0'){
+                    $.ajax({
+                        type: 'post',
+                        url: '/criarEspecie',
+                        data: {
+                            nome: $("#nome").val(),
+                            sub: $("#sub").val(),
+                            genero: $("#genero option:selected" ).text(),
+                            nomes_comuns: $("#nomes_comuns").val(),
+                            caracteristicas: $("#caracteristicas").val(),
+                            ecologia: $("#ecologia").val(),
+                            origem: $("#origem").val(),
+                            dist: $("#dist").val(),
+                            obs: $("#obs").val(),
+                            ref: $("#ref").val(),
+                            wiki: $("#wiki").val(),
+                            util: $("#util").val()
+                        },
+                        success: function (response) {
+                            let temp = $("#genero option:selected" ).text() + ' ' + $("#nome").val() + ' ' + $("#sub").val();
+                            $("#nome").val('');
+                            $("#sub").val('');
+                            $("#genero" ).val("def").change();
+                            $("#nomes_comuns").val('');
+                            $("#caracteristicas").val('');
+                            $("#ecologia").val('');
+                            $("#origem").val('');
+                            $("#dist").val('');
+                            $("#obs").val('');
+                            $("#ref").val('');
+                            $("#wiki").val('');
+                            $("#util").val('');
+                            $('#modal-criar').removeClass('uk-open');
+                            $('#modal-criar').hide();
+                            table.ajax.reload();
+                            alert('A espécie ' + temp + ' foi criada com sucesso!');
+                            return true;
+                        },
+                        error: function (response){
+                            //window.open(JSON.stringify(response))
+                            //confirm(JSON.stringify(response));
+                        }
+                    }); 
+                } else {
+                    $.ajax({
+                        type: 'post',
+                        url: '/editarEspecie',
+                        data: {
+                            id: $("#flag").val(),
+                            nome: $("#nome").val(),
+                            sub: $("#sub").val(),
+                            genero: $("#genero option:selected" ).text(),
+                            nomes_comuns: $("#nomes_comuns").val(),
+                            caracteristicas: $("#caracteristicas").val(),
+                            ecologia: $("#ecologia").val(),
+                            origem: $("#origem").val(),
+                            dist: $("#dist").val(),
+                            obs: $("#obs").val(),
+                            ref: $("#ref").val(),
+                            wiki: $("#wiki").val(),
+                            util: $("#util").val()
+                        },
+                        success: function (response) {
+                            let temp = $("#genero option:selected" ).text() + ' ' + $("#nome").val() + ' ' + $("#sub").val();
+                            $("#nome").val('');
+                            $("#sub").val('');
+                            $("#genero" ).val("def").change();
+                            $("#nomes_comuns").val('');
+                            $("#caracteristicas").val('');
+                            $("#ecologia").val('');
+                            $("#origem").val('');
+                            $("#dist").val('');
+                            $("#obs").val('');
+                            $("#ref").val('');
+                            $("#wiki").val('');
+                            $("#util").val('');
+                            $('#modal-criar').removeClass('uk-open');
+                            $('#modal-criar').hide();
+                            table.ajax.reload();
+                            alert('A espécie ' + temp + ' foi alterada com sucesso!');
+                            return true;
+                        },
+                        error: function (response){
+                            //window.open(JSON.stringify(response))
+                            //confirm(JSON.stringify(response));
+                        }
+                    }); 
+                }
+                return false;
+            })
+        } );
+
+
+        var title;
+        var url;
+        title = 'Tabela de <%= nome %>';
+        url = '/dashboard/tabelas/<%= nome %>'
+        console.log(title);
+        console.log(url);
+        window.history.replaceState({page: "another"}, title, url);
+
+        
+
+
+    </script>
+</main>
+<%- /* Expose locals as `window.SAILS_LOCALS` :: */ exposeLocalsToBrowser() %>

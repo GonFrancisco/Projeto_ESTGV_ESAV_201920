@@ -1,0 +1,96 @@
+<main id="dashboard_index" :class="[heroHeightSet ? '' : 'uninitialized']" v-cloak>
+
+    <div class="uk-container uk-container-small sidebar-padding">
+        <div class="uk-child-width-1-3@m uk-grid-small uk-grid-match" uk-grid>
+        <div>
+            <div class="uk-card uk-card-default uk-card-body">
+            <h3 class="uk-card-title">Utilizadores</h3>
+            <p><%= nu %></p>
+            </div>
+        </div>
+        <div>
+            <div class="uk-card uk-card-primary uk-card-body">
+            <h3 class="uk-card-title">Fotos</h3>
+            <p><%= ni %></p>
+            </div>
+        </div>
+        <div>
+            <div class="uk-card uk-card-secondary uk-card-body">
+            <h3 class="uk-card-title">Comentários</h3>
+            <p><%= nc %></p>
+            </div>
+        </div>
+        </div>
+
+            <!-- <div id="donutchart" style="width: 800px; height: 500px; margin: 20px auto;"></div> -->
+            <canvas id="myChart" width="800" height="500" style="margin: 20px auto;"></canvas>
+
+        
+    </div>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script>
+    var title;
+    var url;
+    title = 'Dashboard';
+    url = '/dashboard %>'
+    console.log(title);
+    console.log(url);
+    window.history.replaceState({page: "another"}, title, url);
+    
+    // google.charts.load("current", {packages:["corechart"]});
+    // google.charts.setOnLoadCallback(drawChart);
+    // function drawChart() {
+    // var data = google.visualization.arrayToDataTable([
+    //     ['Tipo', 'Registos'],
+    //     ['Espécies',     <%= ne %>],
+    //     ['Géneros',      <%= ng %>],
+    //     ['Famílias',  <%= nf %>],
+    //     ['Ordens', <%= no %>]
+    // ]);
+
+    // var options = {
+    //     pieHole: 0.5,
+    //     pieSliceText: 'none',
+    //     legend: {position: 'labeled'},
+    //   };
+
+    // var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+    // chart.draw(data, options);
+    // }
+
+
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Espécies', 'Géneros', 'Famílias', 'Ordens'],
+            datasets: [{
+                label: '# of Votes',
+                data: [<%= ne %>, <%= ng %>, <%= nf %>, <%= no %>],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+
+        }
+    });
+
+
+</script>
+</main>
+          <%- /* Expose locals as `window.SAILS_LOCALS` :: */ exposeLocalsToBrowser() %>
+          

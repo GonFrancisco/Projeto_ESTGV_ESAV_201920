@@ -1,0 +1,108 @@
+<main id="registar" :class="[heroHeightSet ? '' : 'uninitialized']" v-cloak>
+
+        <div class="uk-container uk-container-small">
+
+          <div class="uk-width-1-1@s">
+            <div class="uk-card uk-card-pages uk-card-body">
+              <div class="uk-card-header">
+                <h3 class="uk-card-title">Registo</h3>
+              </div>
+              <form id="form-registar" class="uk-grid-small" uk-grid>
+                <div class="uk-width-1-2@s">
+                  <label class="uk-form-label">Primeiro nome:</label>
+                  <input name="pnome" class="uk-input uk-form-large auth-color" type="text" placeholder="John">
+                </div>
+                <div class="uk-width-1-2@s">
+                  <label class="uk-form-label">Último nome:</label>
+                  <input name="unome" class="uk-input uk-form-large auth-color" type="text" placeholder="Doe">
+                </div>
+                <div class="uk-width-1-1@s">
+                  <label class="uk-form-label">Email:</label>
+                  <div class="uk-inline uk-width-1-1">
+                    <span class="uk-form-icon" uk-icon="icon: mail"></span>
+                    <input name="mail" class="uk-input uk-form-large auth-color" type="text" placeholder="exemplo@gmail.com">
+                  </div>
+                </div>
+                <div class="uk-width-1-2@s">
+                <label class="uk-form-label">Password:</label>
+                  <div class="uk-inline uk-width-1-1">
+                    <span class="uk-form-icon" uk-icon="icon: lock"></span>
+                    <input id="registar-pw" name="pw" class="uk-input uk-form-large auth-color" type="password" placeholder="********">
+                  </div>
+                </div>
+                <div class="uk-width-1-2@s">
+                  <label class="uk-form-label">Confirmar password:</label>
+                  <div class="uk-inline uk-width-1-1">
+                    <span class="uk-form-icon" uk-icon="icon: lock"></span>
+                    <input id="registar-pwc" name="pwc" class="uk-input uk-form-large auth-color" type="password" placeholder="********">
+                  </div>
+                </div>
+                <div class="uk-width-1-1@s">
+                  <button type="submit" form="form-registar" id="registar-save-pw" class="uk-button uk-button-primary uk-button-large uk-width-1-1">Registar</button>
+                </div>
+              </form>
+              <div class="uk-text-center" style="font-size: 1.25rem; margin-top: 20px;">
+                Já registado? <a href="/login">Fazer login</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+    
+        <script>
+
+            function sendRegist(){
+                $.ajax({
+                type: 'post',
+                url: '/registar',
+                data: $('#form-registar').serialize(),
+                success: function (response) {
+                    alert('O seu registo foi concluído com sucesso.');
+                    location.href = "/";
+                },
+                error: function (response){
+                    //alert(response.responseText);
+                    UIkit.modal.dialog('<button class="uk-modal-close-default" type="button" uk-close></button><p style="color:red" class="uk-modal-body">' + response.responseText + '</p>');
+                }
+            }); 
+            }
+
+            $("#form-registar").on("submit", function(e){
+                e.preventDefault();
+                
+                sendRegist();
+
+                return false;
+            })
+
+            /*function validatingPasswordRegistar() {
+                var password = $("#registar-pw").val();
+                var confirmPassword = $("#registar-pwc").val();
+                if (password.length < 6){
+                    $("#match-registar").html("Password deve ter pelo menos 6 caractéres!");
+                    document.getElementById("registar-save-pw").disabled = true;
+                } else if (password != confirmPassword){
+                    $("#match-registar").html("Passwords não são iguais!");
+                    document.getElementById("registar-save-pw").disabled = true;
+                } else {
+                    $("#match-registar").html("");
+                    document.getElementById("registar-save-pw").disabled = false;
+                }
+            }
+
+            $(document).ready(function () {
+                document.getElementById("registar-save-pw").disabled = true;
+                $("#registar-pw, #registar-pwc").keyup(validatingPasswordRegistar);
+                //$("#pwc").keyup(Passwords);
+            });*/
+
+            var title;
+            var url;
+            title = 'Registar';
+            url = '/registar'
+            console.log(title);
+            console.log(url);
+            window.history.replaceState({page: "another"}, title, url);
+        </script>
+    </main>
+    <%- /* Expose locals as `window.SAILS_LOCALS` :: */ exposeLocalsToBrowser() %>

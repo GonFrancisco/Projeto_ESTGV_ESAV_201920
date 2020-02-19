@@ -1,0 +1,39 @@
+
+<html>
+    <head>
+    
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
+    
+    </head>
+    
+    
+    
+    <div class="uk-container uk-container-small sidebar-padding">
+        <table id="simple-test" class="uk-table uk-table-divider">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Apelido</th>
+                    <th>Mail</th>
+                    <th>Tipo</th>
+                </tr>
+            </thead>
+
+        </table>
+    
+        <script>
+            
+            let dataTable = new simpleDatatables.DataTable("#simple-test", {
+                searchable: true,
+                fixedHeight: true,
+                header: true,
+                ajax: '/dashboard/tabelas/utilizadores/data',
+                truncatePager: true
+            });
+        </script>
+    </body>
+    </div>
+    </html>
+    
