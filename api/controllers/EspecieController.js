@@ -7,6 +7,7 @@
 
 var NovosTermosController = require('./NovosTermosController');
 var FotoController = require('./FotoController');
+var fs = require('fs');
 
 module.exports = {
 
@@ -218,12 +219,15 @@ module.exports = {
             )`;
           order = await sails.sendNativeQuery(query, [ familia.rows[0].familia ]);
           var capa = await FotoController.getCapa(result.id, req, res);
-          if (capa != 'semfotos.jpg') capa = result.genero + '_' + result.nome + '_' + result.sub_especie + '/' + capa;
+          if (capa[0] != 'semfotos.jpg') capa[0] = result.genero + '_' + result.nome + '_' + result.sub_especie + '/' + capa[0];
+          if (capa[1] != 'semfotos.jpg') capa[1] = result.genero + '_' + result.nome + '_' + result.sub_especie + '/' + capa[1];
+          if (capa[2] != 'semfotos.jpg') capa[2] = result.genero + '_' + result.nome + '_' + result.sub_especie + '/' + capa[2];
 
             //console.log(capa)
             //console.log(result)
         return res.view('pages/especie/especie', {
-            capa: capa,
+            capa: capa[0],
+            more: capa,
             result: result,
             order: order,
             familia: familia,
@@ -248,7 +252,7 @@ module.exports = {
   },
 
   openTabela: async function(req, res){
-    var colunas = ['ID', 'Género', 'Espécie', 'Sub-espécie', 'Nomes Comuns', 'Características', 'Imagem do Ciclo', 'Link da Wikipédia', 'Ecologia', 'Distribuição', 'Origem', 'Utilizações', 'Observações', 'Referências'];
+    var colunas = ['ID', 'Género', 'Espécie', 'Sub-espécie', 'Nomes Comuns', 'Características', 'Imagem do Ciclo', 'Link da Wikipédia', 'Ecologia', 'Distribuição', 'Origem', 'Utilizações', 'Observações', 'Referências', 'Ficheiro PDF'];
     var data = [
         { "data": "id" },
         { "data": "genero" },
@@ -263,7 +267,8 @@ module.exports = {
         { "data": "origem" },
         { "data": "utilizacoes" },
         { "data": "observacoes" },
-        { "data": "referencias" }
+        { "data": "referencias" },
+        { "data": "pdf" }
     ]
     generos = await Genero.find({
       select: ['id']
@@ -280,7 +285,7 @@ module.exports = {
 
   toJSON: async function(req, res){
     result = await Especie.find({
-        select: ['id', 'nome', 'sub_especie', 'genero', 'nomes_comuns', 'caracteristicas', 'imagem_ciclo', 'wiki_link', 'ecologia', 'distribuicao', 'origem', 'utilizacoes', 'observacoes', 'referencias']
+        select: ['id', 'nome', 'sub_especie', 'genero', 'nomes_comuns', 'caracteristicas', 'imagem_ciclo', 'wiki_link', 'ecologia', 'distribuicao', 'origem', 'utilizacoes', 'observacoes', 'referencias', 'pdf']
       });
       if (result.length > 0) {
         //console.log(JSON.stringify(result));
@@ -301,26 +306,79 @@ module.exports = {
       sub_especie: req.param('sub'),
       nomes_comuns: nc,
       caracteristicas: req.param('caracteristicas'),
-      imagem_ciclo: 'temp',//req.param('unome'),
+      imagem_ciclo: 'semciclo.png',//req.param('unome'),
       wiki_link: req.param('wiki'),
       ecologia: req.param('ecologia'),
       origem: req.param('origem'),
       distribuicao: req.param('dist'),
       utilizacoes: req.param('util'),
       observacoes: req.param('obs'),
-      referencias: ref
+      referencias: ref,
+      pdf: 'sempdf.pdf'
     };
 
-    Especie.create(data).fetch().exec(function(err, user){
+    Especie.create(data).fetch().exec(async function(err, user){
         if (err) { return res.serverError(err); }
+        folder_name = user.genero + '_' + user.nome + '_' + user.sub_especie;
+
+        fs.mkdir('assets/images/galeria/especies/' + folder_name, 0744, function(err) {
+           if (err) {
+               if (err.code == 'EEXIST')  console.log(folder_name + ' ja existe'); // ignore the error if the folder already exists
+                else console.log(folder_name + ' erro inesperado'); // something else went wrong
+          } else console.log(folder_name + ' criada com sucesso'); // successfully created folder
+        });
+        fs.mkdir('assets/files/especies/' + folder_name, 0744, function(err) {
+           if (err) {
+               if (err.code == 'EEXIST')  console.log(folder_name + ' ja existe'); // ignore the error if the folder already exists
+               else console.log(folder_name + ' erro inesperado'); // something else went wrong
+           } else console.log(folder_name + ' criada com sucesso'); // successfully created folder
+        });
+        var path = '../../assets/images/ciclos/';
+        var nome = req.param('nome_imagem') + '.png';
+        req.file('imagem_ciclo').upload({dirname: path, saveAs: function (__newFileStream, next) { return next(undefined, nome); }},function (err, uploadedFiles){
+        if (err) return res.serverError(err);
+        console.log(uploadedFiles.length + ' img(s) uploaded successfully!');
+        });
+        var updatedEspecie = await Especie.updateOne({ id:user.id })
+            .set({
+                imagem_ciclo: nome,
+            });
+
+        var especie = req.param('especie_pdf');
+        var path1 = '../../assets/files/especies/' + especie + '/';
+        var nome1 = req.param('nome_pdf');
+
+        req.file('pdf').upload({dirname: path1, saveAs: function (__newFileStream, next) { return next(undefined, nome1); }},function (err, uploadedFiles){
+        if (err) return res.serverError(err);
+        console.log(uploadedFiles.length + ' pdf(s) uploaded successfully!');
+        });
+        updatedEspecie = await Especie.updateOne({ id:user.id })
+            .set({
+                pdf: nome1,
+            });
         return res.ok();
     });
+
+    
+
+
+    
   },
 
   edit: async function(req, res){
     
     let nc = req.param('nomes_comuns');
     let ref = req.param('ref');
+
+    const tmp = await Especie.findOne({id:req.param('id')});
+    var base_files = 'assets/files/especies/';
+    var base_galeria = 'assets/images/galeria/especies/';
+    var old_path = '';
+    var new_path = '';
+    if(tmp){
+        old_path = tmp.genero + '_' + tmp.nome + '_' + tmp.sub_especie;
+        new_path = req.param('genero') + '_' + req.param('nome') + '_' + req.param('sub');
+    }
 
     var updatedEspecie = await Especie.updateOne({ id:req.param('id') })
     .set({
@@ -329,18 +387,36 @@ module.exports = {
         sub_especie: req.param('sub'),
         nomes_comuns: nc,
         caracteristicas: req.param('caracteristicas'),
-        imagem_ciclo: 'temp',
+        //imagem_ciclo: 'temp',
         wiki_link: req.param('wiki'),
         ecologia: req.param('ecologia'),
         origem: req.param('origem'),
         distribuicao: req.param('dist'),
         utilizacoes: req.param('util'),
         observacoes: req.param('obs'),
-        referencias: ref
+        referencias: ref,
+        //pdf: 'tmp'
     });
 
     if (updatedEspecie) {
-        return res.ok();
+        if(old_path != new_path){
+            fs.rename(base_files + old_path, base_files + new_path, function(err) {
+                if (err) {
+                console.log(err)
+                } else {
+                console.log("Successfully renamed the directory.") 
+                }
+            });
+            fs.rename(base_galeria + old_path, base_galeria + new_path, function(err) {
+                if (err) {
+                console.log(err)
+                } else {
+                console.log("Successfully renamed the directory.") 
+                }
+            })
+        }
+          return res.ok();
+        
       }
       else {
         return res.serverError();
@@ -365,6 +441,52 @@ module.exports = {
     } else {
         return res.serverError();
     }
-  }
+  }, 
 
-};
+  uploadCiclo: async function (req, res) {
+    
+    var path = '../../assets/images/ciclos/';
+    var nome = req.param('nome') + '.png';
+    req.file('imagem_ciclo').upload({dirname: path, saveAs: function (__newFileStream, next) { return next(undefined, nome); }},function (err, uploadedFiles){
+      if (err) return res.serverError(err);
+      console.log(uploadedFiles.length + ' img(s) uploaded successfully!');
+      });
+      var updatedEspecie = await Especie.updateOne({ id:req.param('id') })
+        .set({
+            imagem_ciclo: nome,
+        });
+
+        if (updatedEspecie) {
+            return res.ok();
+        }
+        else {
+            return res.serverError();
+        }
+    
+  },
+
+  uploadPdf: async function (req, res) {
+    var especie = req.param('especie');
+    var path = '../../assets/files/especies/' + especie + '/';
+    var nome1 = req.param('nome1');
+
+    req.file('pdf').upload({dirname: path, saveAs: function (__newFileStream, next) { return next(undefined, nome1); }},function (err, uploadedFiles){
+      if (err) return res.serverError(err);
+      console.log(uploadedFiles.length + ' pdf(s) uploaded successfully!');
+      });
+      var updatedEspecie = await Especie.updateOne({ id:req.param('id') })
+        .set({
+            pdf: nome1,
+        });
+
+        if (updatedEspecie) {
+            return res.ok();
+        }
+        else {
+            return res.serverError();
+        }
+  },
+
+  
+
+}

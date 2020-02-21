@@ -78,5 +78,10 @@ module.exports = {
             columnType: "int",
             isInteger: true
         },
+        pdf: {
+            type: "string",
+            columnType: "varchar",
+            maxLength: 128
+        },
     }
 };

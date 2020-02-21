@@ -10,35 +10,53 @@
         <div class="uk-margin" uk-grid>
             <div class="uk-width-1-2@s">
                 <!--uk-width-1-2@s-->
-                <div class="uk-card uk-card-default uk-card-pages uk-card-body img-center" uk-lightbox="animation: slide">
+                <div class="uk-card uk-card-default uk-card-pages uk-card-body img-center">
                     <div class="uk-card-header">
                         <h3 class="uk-card-title">Galeria</h3>
                     </div>
-                    <div>
-                        <a href="/images/main.jpg" data-caption="Imagem 1">
-                            <img class="especie-cover" src="/images/galeria/especies/<%= capa %>" alt="">
-                        </a>
-                    </div>
-                    <div class="uk-child-width-1-2@s" uk-grid="masonry: true">
+                    <div uk-lightbox="animation: slide">
                         <div>
-                            <a href="/images/mai.jpg" data-caption="Imagem 2">
-                                <img class="uk-card uk-card-default uk-card-pages uk-flex uk-flex-center uk-flex-middle"
-                                    style="max-height: 160px" src="/images/main.jpg" alt="">
+                            <a href="/images/galeria/especies/<%= capa %>" data-caption="Imagem 1">
+                                <img class="especie-cover" src="/images/galeria/especies/<%= capa %>" alt="">
                             </a>
                         </div>
-                        <div>
-                            <a href="/images/ma.jpg" data-caption="Imagem 3">
-                                <img class="uk-card uk-card-default uk-card-pages uk-flex uk-flex-center uk-flex-middle"
-                                    style="max-height: 160px" src="/images/main.jpg" alt="">
-                            </a>
-                        </div>
-                        <div>
-                            <a uk-icon="icon: album; ratio: 1">Ver todas </a>
-                        </div>
-                        <div>
-                            <a uk-icon="icon: plus-circle; ratio: 1">Adicionar foto </a>
+                        <div class="uk-child-width-1-2@s" uk-grid="masonry: true">
+                            <div>
+                                <a href="/images/galeria/especies/<%= more[1] %>" data-caption="Imagem 2">
+                                    <img style="margin: 0 auto" class="uk-card uk-card-default uk-card-pages uk-flex uk-flex-center uk-flex-middle"
+                                        style="max-height: 160px" src="/images/galeria/especies/<%= more[1] %>" alt="">
+                                </a>
+                            </div>
+                            <div>
+                                <a href="/images/galeria/especies/<%= more[2] %>" data-caption="Imagem 3">
+                                    <img style="margin: 0 auto" class="uk-card uk-card-default uk-card-pages uk-flex uk-flex-center uk-flex-middle"
+                                        style="max-height: 160px" src="/images/galeria/especies/<%= more[2] %>" alt="">
+                                </a>
+                            </div>
                         </div>
                     </div>
+                        <div class="uk-child-width-1-2@s" uk-grid style="margin-top: 20px;">
+                            <div>
+                                <a uk-icon="icon: album; ratio: 1">Ver todas </a>
+                            </div>
+                            <div> 
+                                <a href="#modal-add-foto" uk-toggle uk-icon="icon: plus-circle; ratio: 1">Adicionar foto </a>
+                            </div>
+                            <div id="modal-add-foto" uk-modal>
+                                <div class="uk-modal-dialog uk-modal-body">
+                                    <button class="uk-modal-close-default" type="button" uk-close></button>
+                                    <h2 class="uk-modal-title">Adicionar foto</h2>
+                                    <form id="add_foto" class="uk-grid-small" uk-grid action="/addFoto" method="post">
+                                        <input type="file" id="foto" name="foto" accept="image/*">
+                                    </form>
+                                    <p class="uk-text-right">
+                                        <button onclick="fn_add_foto()" class="uk-button uk-button-primary"
+                                            type="button">Guardar</button>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    
                 </div>
             </div>
             <div class="uk-width-1-2@s margin-20">
@@ -142,7 +160,7 @@
           </div>
       </div>
       <div class="to-pdf">
-        <a uk-icon="icon: file-pdf; ratio: 2" id="getpdf-btn" href="" + window.location.href>Guardar em PDF</a>
+        <a uk-icon="icon: file-pdf; ratio: 2" id="getpdf-btn" href='/files/especies/<%= result.genero + "_" + result.nome + "_" + result.sub_especie %>/<%= result.pdf %>' download="">Exportar PDF</a>
         
       </div>
       <div class="uk-width-1-1@s comments">
@@ -410,6 +428,41 @@
             reloadComentarios();
             return false;
         })
+
+        function fn_add_foto() {
+
+            var formfoto = new FormData();
+            var file = document.getElementById('foto').files[0];
+            let esp = '<%= result.genero + "_" + result.nome + "_" + result.sub_especie %>'
+            let id = <%= result.id %>;
+            formfoto.append('id', id);
+            formfoto.append('especie', esp);
+            formfoto.append('foto', file);
+            $.ajax({
+                type: 'POST',
+                url: '/addFoto',
+                data: formfoto,
+                processData: false,
+                contentType: false,
+                enctype: 'multipart/form-data',
+                success: function (data) {
+                    setTimeout(function (){
+
+                    alert('A imagem foi adicionada.');
+                    $('#modal-add-foto').hide();
+                    document.getElementById('foto').value = ""
+                    location.reload();
+
+                    }, 1000);
+                    
+                },
+                error: function (data) {
+                    alert('Ocorreu um erro ao adicionar a imagem, por favor tente novamente mais tarde.');
+                    $('#modal-add-foto').hide();
+                    document.getElementById('foto').value =""
+                },
+            });
+        }
 
         console.log(window.location);
 

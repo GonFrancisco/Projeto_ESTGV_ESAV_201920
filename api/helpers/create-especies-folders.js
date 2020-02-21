@@ -34,6 +34,12 @@ module.exports = {
                         else console.log(folder_name + ' erro inesperado'); // something else went wrong
                     } else console.log(folder_name + ' criada com sucesso'); // successfully created folder
                 });
+                fs.mkdir('assets/files/especies/' + folder_name, 0744, function(err) {
+                    if (err) {
+                        if (err.code == 'EEXIST')  console.log(folder_name + ' ja existe'); // ignore the error if the folder already exists
+                        else console.log(folder_name + ' erro inesperado'); // something else went wrong
+                    } else console.log(folder_name + ' criada com sucesso'); // successfully created folder
+                });
                  
             }
             

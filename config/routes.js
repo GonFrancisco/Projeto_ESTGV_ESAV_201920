@@ -27,15 +27,14 @@ module.exports.routes = {
     '/familia/:id': 'EspecieController.search',
     '/ordem/:id': 'EspecieController.search',
 
+    'post /addFoto': 'FotoController.addFoto',
+
     // sugestões
     'post /sugerir': 'SugestoesController.add',
 
     // comentarios
     'post /addComentario': 'ComentarioController.add',
     'post /getComentarios/:id_especie': 'ComentarioController.getByEspecie',
-
-    // exportar pdf
-    '/getPDF:url?': 'PdfController.getPDF',
 
     '/': 'EspecieController.home',
 
@@ -58,6 +57,8 @@ module.exports.routes = {
     'post /criarEspecie': 'EspecieController.addNew',
     'post /editarEspecie': 'EspecieController.edit',
     'post /apagarEspecie': 'EspecieController.apagar',
+    'post /adicionarCiclo': 'EspecieController.uploadCiclo',
+    'post /adicionarPdf': 'EspecieController.uploadPdf',
 
     'post /criarGenero': 'GeneroController.addNew',
     'post /editarGenero': 'GeneroController.edit',

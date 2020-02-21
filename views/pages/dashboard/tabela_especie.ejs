@@ -80,6 +80,22 @@
                             </div>
                         </li>
                         <li>
+                            <a class="uk-accordion-title" href="#">Imagem do Ciclo</a>
+                            <div class="uk-margin uk-accordion-content" >
+                                
+                                    <input name ="imagem_ciclo" id="input-ciclo-pic" type="file" accept="image/*" style="cursor: pointer;">
+                                
+                            </div>
+                        </li>
+                        <li>
+                            <a class="uk-accordion-title" href="#">Ficheiro PDF</a>
+                            <div class="uk-margin uk-accordion-content">
+                                
+                                    <input name ="pdf" id="input-pdf" type="file" accept="application/pdf" style="cursor: pointer;">
+                                
+                            </div>
+                        </li>
+                        <li>
                             <a class="uk-accordion-title" href="#">Ecologia</a>
                             <div class="uk-margin uk-accordion-content">
                                 <textarea oninput='this.style.height = "";this.style.height = this.scrollHeight + 3 + "px"'
@@ -146,51 +162,7 @@
         </div>
     <script>
         
-        // function format ( d ) {
-        //     // `d` is the original data object for the row
-        //     return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
-        //         '<tr>'+
-        //             '<td>Características:</td>'+
-        //             '<td>'+d.caracteristicas+'</td>'+
-        //         '</tr>'+
-        //         '<tr>'+
-        //             '<td>Nomes comuns:</td>'+
-        //             '<td>'+d.nomes_comuns+'</td>'+
-        //         '</tr>'+
-        //         '<tr>'+
-        //             '<td>Ciclo anual:</td>'+
-        //             '<td>'+d.imagem_ciclo+'</td>'+
-        //         '</tr>'+
-        //         '<tr>'+
-        //             '<td>Link Wikipedia:</td>'+
-        //             '<td>'+d.wiki_link+'</td>'+
-        //         '</tr>'+
-        //         '<tr>'+
-        //             '<td>Ecologia:</td>'+
-        //             '<td>'+d.ecologia+'</td>'+
-        //         '</tr>'+
-        //         '<tr>'+
-        //             '<td>Origem:</td>'+
-        //             '<td>'+d.origem+'</td>'+
-        //         '</tr>'+
-        //         '<tr>'+
-        //             '<td>Distribuição:</td>'+
-        //             '<td>'+d.distribuicao+'</td>'+
-        //         '</tr>'+
-        //         '<tr>'+
-        //             '<td>Utilizações:</td>'+
-        //             '<td>'+d.utilizacoes+'</td>'+
-        //         '</tr>'+
-        //         '<tr>'+
-        //             '<td>Observações:</td>'+
-        //             '<td>'+d.observacoes+'</td>'+
-        //         '</tr>'+
-        //         '<tr>'+
-        //             '<td>Referências:</td>'+
-        //             '<td>'+d.referencias+'</td>'+
-        //         '</tr>'+
-        //     '</table>';
-        // }
+
         var data = <%- JSON.stringify(data) %>;
         var nome_tabela = '<%- nome %>';
         $(document).ready(function() {
@@ -226,6 +198,7 @@
                             $("#genero" ).val('def').change();
                             $("#nomes_comuns").val('');
                             $("#caracteristicas").val('');
+                            $("#input-ciclo-pic").val('');
                             $("#ecologia").val('');
                             $("#origem").val('');
                             $("#dist").val('');
@@ -233,6 +206,7 @@
                             $("#obs").val('');
                             $("#ref").val('');
                             $("#wiki").val('');
+                            $("#input-pdf").val('');
                         }
                     },
                     {
@@ -331,99 +305,202 @@
                 table.button( 2 ).disable();
             } );
 
-            $("#form-criar").on("submit", function(e){
-                e.preventDefault();
-                //console.log('front end ' + $("#nome").val());
-                if($("#flag").val() === '0'){
-                    $.ajax({
-                        type: 'post',
-                        url: '/criarEspecie',
-                        data: {
-                            nome: $("#nome").val(),
-                            sub: $("#sub").val(),
-                            genero: $("#genero option:selected" ).text(),
-                            nomes_comuns: $("#nomes_comuns").val(),
-                            caracteristicas: $("#caracteristicas").val(),
-                            ecologia: $("#ecologia").val(),
-                            origem: $("#origem").val(),
-                            dist: $("#dist").val(),
-                            obs: $("#obs").val(),
-                            ref: $("#ref").val(),
-                            wiki: $("#wiki").val(),
-                            util: $("#util").val()
-                        },
-                        success: function (response) {
-                            let temp = $("#genero option:selected" ).text() + ' ' + $("#nome").val() + ' ' + $("#sub").val();
-                            $("#nome").val('');
-                            $("#sub").val('');
-                            $("#genero" ).val("def").change();
-                            $("#nomes_comuns").val('');
-                            $("#caracteristicas").val('');
-                            $("#ecologia").val('');
-                            $("#origem").val('');
-                            $("#dist").val('');
-                            $("#obs").val('');
-                            $("#ref").val('');
-                            $("#wiki").val('');
-                            $("#util").val('');
-                            $('#modal-criar').removeClass('uk-open');
-                            $('#modal-criar').hide();
-                            table.ajax.reload();
-                            alert('A espécie ' + temp + ' foi criada com sucesso!');
-                            return true;
-                        },
-                        error: function (response){
-                            //window.open(JSON.stringify(response))
-                            //confirm(JSON.stringify(response));
-                        }
-                    }); 
-                } else {
-                    $.ajax({
-                        type: 'post',
-                        url: '/editarEspecie',
-                        data: {
-                            id: $("#flag").val(),
-                            nome: $("#nome").val(),
-                            sub: $("#sub").val(),
-                            genero: $("#genero option:selected" ).text(),
-                            nomes_comuns: $("#nomes_comuns").val(),
-                            caracteristicas: $("#caracteristicas").val(),
-                            ecologia: $("#ecologia").val(),
-                            origem: $("#origem").val(),
-                            dist: $("#dist").val(),
-                            obs: $("#obs").val(),
-                            ref: $("#ref").val(),
-                            wiki: $("#wiki").val(),
-                            util: $("#util").val()
-                        },
-                        success: function (response) {
-                            let temp = $("#genero option:selected" ).text() + ' ' + $("#nome").val() + ' ' + $("#sub").val();
-                            $("#nome").val('');
-                            $("#sub").val('');
-                            $("#genero" ).val("def").change();
-                            $("#nomes_comuns").val('');
-                            $("#caracteristicas").val('');
-                            $("#ecologia").val('');
-                            $("#origem").val('');
-                            $("#dist").val('');
-                            $("#obs").val('');
-                            $("#ref").val('');
-                            $("#wiki").val('');
-                            $("#util").val('');
-                            $('#modal-criar').removeClass('uk-open');
-                            $('#modal-criar').hide();
-                            table.ajax.reload();
-                            alert('A espécie ' + temp + ' foi alterada com sucesso!');
-                            return true;
-                        },
-                        error: function (response){
-                            //window.open(JSON.stringify(response))
-                            //confirm(JSON.stringify(response));
-                        }
-                    }); 
-                }
-                return false;
-            })
+$("#form-criar").on("submit", function(e){
+    e.preventDefault();
+    //console.log('front end ' + $("#nome").val());
+    var fileInput = document.getElementById('input-ciclo-pic');
+    if($('#input-ciclo-pic').val().trim()){
+        var file = fileInput.files[0];
+        var formData = new FormData();
+        formData.append('id', $("#flag").val());
+        formData.append('nome', $("#genero option:selected" ).text() + $("#nome").val() + $("#sub").val());
+        formData.append('imagem_ciclo', file);  
+    }
+
+    var fileInput1 = document.getElementById('input-pdf');
+    if($('#input-pdf').val().trim()){
+        var file1 = fileInput1.files[0];
+        var formData1 = new FormData();
+        formData1.append('id', $("#flag").val());
+        formData1.append('especie', $("#genero option:selected" ).text() + '_' + $("#nome").val() + '_' + $("#sub").val());
+        formData1.append('nome1', file1.name);
+        formData1.append('pdf', file1);  
+    }
+    
+
+    if($("#flag").val() === '0'){
+        var formData2 = new FormData();
+        formData2.append('nome', $("#nome").val());
+        formData2.append('sub', $("#sub").val());
+        formData2.append('genero', $("#genero option:selected" ).text());
+        formData2.append('nomes_comuns', $("#nomes_comuns").val());
+        formData2.append('caracteristicas', $("#caracteristicas").val());
+        formData2.append('ecologia', $("#ecologia").val());
+        formData2.append('origem', $("#origem").val());
+        formData2.append('dist', $("#dist").val());
+        formData2.append('obs', $("#obs").val());
+        formData2.append('ref', $("#ref").val());
+        formData2.append('wiki', $("#wiki").val());
+        formData2.append('util', $("#util").val());
+        if($('#input-ciclo-pic').val().trim()){
+            formData2.append('nome_imagem', $("#genero option:selected" ).text() + $("#nome").val() + $("#sub").val());
+            formData2.append('imagem_ciclo', file);
+        }
+        if($('#input-pdf').val().trim()){
+            formData2.append('especie_pdf', $("#genero option:selected" ).text() + '_' + $("#nome").val() + '_' + $("#sub").val());
+            formData2.append('nome_pdf', file1.name);
+            formData2.append('pdf', file1);  
+        }
+        $.ajax({
+            type: 'post',
+            url: '/criarEspecie',
+            data: formData2,
+            processData: false,
+            contentType: false,
+            enctype: 'multipart/form-data',
+            success: function (response) {
+                let temp = $("#genero option:selected" ).text() + ' ' + $("#nome").val() + ' ' + $("#sub").val();
+                $("#nome").val('');
+                $("#sub").val('');
+                $("#genero" ).val("def").change();
+                $("#nomes_comuns").val('');
+                $("#caracteristicas").val('');
+                $("#ecologia").val('');
+                $("#origem").val('');
+                $("#dist").val('');
+                $("#obs").val('');
+                $("#ref").val('');
+                $("#wiki").val('');
+                $("#util").val('');
+                $('#input-ciclo-pic').val('');
+                $('#input-pdf').val('');
+                
+                $('#modal-criar').removeClass('uk-open');
+                $('#modal-criar').hide();
+                table.ajax.reload();
+                alert('A espécie ' + temp + ' foi criada com sucesso!');
+                return true;
+            },
+            error: function(response){
+            }
+        });
+    } else {
+        if($('#input-pdf').val().trim()){
+
+            $.ajax({
+                    type: 'post',
+                    url: '/adicionarPdf',
+                    data: formData1, 
+                    processData: false,
+                    contentType: false,
+                    enctype: 'multipart/form-data',
+                    success: function(response){
+                        if($('#input-ciclo-pic').val().trim()){
+                
+                $.ajax({
+                    type: 'post',
+                    url: '/adicionarCiclo',
+                    data: formData, 
+                    processData: false,
+                    contentType: false,
+                    enctype: 'multipart/form-data',
+                    success: function(response){
+                        console.log('sucesso')
+                        editarEspecie();
+
+                    },
+                    error: function (response){
+                        console.log('erro')
+                        //window.open(JSON.stringify(response))
+                        //confirm(JSON.stringify(response));
+                    }
+                })
+            } else {
+                editarEspecie();
+            }
+                    },
+                    error: function(response){
+                    }
+            });
+            
+        } else{
+            if($('#input-ciclo-pic').val().trim()){
+                console.log($("#genero option:selected" ).text() + $("#nome").val() + $("#sub").val())
+                $.ajax({
+                    type: 'post',
+                    url: '/adicionarCiclo',
+                    data: formData, 
+                    processData: false,
+                    contentType: false,
+                    enctype: 'multipart/form-data',
+                    success: function(response){
+                        console.log('sucesso')
+                        editarEspecie();
+
+                    },
+                    error: function (response){
+                        console.log('erro')
+                        //window.open(JSON.stringify(response))
+                        //confirm(JSON.stringify(response));
+                    }
+                })
+            } else {
+                editarEspecie();
+            }
+        }
+    }
+    return false;
+})
+
+function editarEspecie(){
+    $.ajax({
+        type: 'post',
+        url: '/editarEspecie',
+        data: {
+            id: $("#flag").val(),
+            nome: $("#nome").val(),
+            sub: $("#sub").val(),
+            genero: $("#genero option:selected" ).text(),
+            nomes_comuns: $("#nomes_comuns").val(),
+            caracteristicas: $("#caracteristicas").val(),
+            ecologia: $("#ecologia").val(),
+            origem: $("#origem").val(),
+            dist: $("#dist").val(),
+            obs: $("#obs").val(),
+            ref: $("#ref").val(),
+            wiki: $("#wiki").val(),
+            util: $("#util").val()
+        },
+        success: function (response) {
+            let temp = $("#genero option:selected" ).text() + ' ' + $("#nome").val() + ' ' + $("#sub").val();
+            $("#nome").val('');
+            $("#sub").val('');
+            $("#genero" ).val("def").change();
+            $("#nomes_comuns").val('');
+            $("#caracteristicas").val('');
+            $("#ecologia").val('');
+            $("#origem").val('');
+            $("#dist").val('');
+            $("#obs").val('');
+            $("#ref").val('');
+            $("#wiki").val('');
+            $("#util").val('');
+            $('#input-ciclo-pic').val('');
+            $('#input-pdf').val('');
+            $('#modal-criar').removeClass('uk-open');
+            $('#modal-criar').hide();
+            table.ajax.reload();
+            alert('A espécie ' + temp + ' foi alterada com sucesso!');
+            return true;
+        },
+        error: function (response){
+            //window.open(JSON.stringify(response))
+            //confirm(JSON.stringify(response));
+        }
+    });
+}
+
+
         } );
 
 
