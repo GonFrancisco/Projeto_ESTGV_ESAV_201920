@@ -37,6 +37,11 @@ module.exports = {
             type: "string",
             columnType: "varchar",
             maxLength: 64
-        }
+        },
+        n_pesquisas: {
+            type: "number",
+            columnType: "int",
+            isInteger: true
+        },
     }
 };

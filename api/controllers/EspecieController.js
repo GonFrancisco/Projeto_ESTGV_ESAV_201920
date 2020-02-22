@@ -79,6 +79,8 @@ module.exports = {
             nome: id
           });
           if (result.length > 0) {
+            let updesp = `update especie set n_pesquisas = n_pesquisas + 1 where nome = $1`;
+          upd = await sails.sendNativeQuery(updesp, [id]);
             return res.view('pages/especie/resultados', {
               result: result,
               title: 'Resultados para ' + result[0].nome
@@ -88,6 +90,10 @@ module.exports = {
               id: id
             });
             if (result) {
+              await Genero.update({id: id})
+              .set({
+                n_pesquisas: result.n_pesquisas + 1
+              });
               especies = await Especie.find({
                 genero: result.id
               })
@@ -110,6 +116,10 @@ module.exports = {
                   familia: result.id,
                 });
                 //console.log(especies);
+                await Familia.update({id: id})
+                .set({
+                  n_pesquisas: result.n_pesquisas + 1
+                });
                 return res.view('pages/familia/familia', {
                   result: result,
                   especies: especies.rows,
@@ -138,6 +148,10 @@ module.exports = {
                     ordem: result.id
                   });
                   //console.log(especies.rows);
+                  await Ordem.update({id: id})
+                  .set({
+                    n_pesquisas: result.n_pesquisas + 1
+                  })
                   return res.view('pages/ordem/ordem', {
                     result: result,
                     especies: especies.rows,
@@ -225,6 +239,13 @@ module.exports = {
 
             //console.log(capa)
             //console.log(result)
+            await Especie.updateOne({
+              nome: id[1],
+              genero: id[0],
+              sub_especie: sub})
+                  .set({
+                    n_pesquisas: result.n_pesquisas + 1
+                  })
         return res.view('pages/especie/especie', {
             capa: capa[0],
             more: capa,
@@ -360,9 +381,6 @@ module.exports = {
     });
 
     
-
-
-    
   },
 
   edit: async function(req, res){
@@ -433,14 +451,39 @@ module.exports = {
   },
 
   top_pesquisa: async function(req, res){
+      var ret = [];
       var top = await Especie.find({
         select: ['nome', 'sub_especie', 'genero', 'n_pesquisas']
-      }).sort('n_pesquisas DESC').limit(5);
-      if (top) {
-        return res.send(top);
-    } else {
+      }).sort([
+        { n_pesquisas: 'DESC' },
+        { nome: 'ASC' },
+      ]).limit(1);
+      var tmp = top[0].genero + ' ' + top[0].nome + ' ' + top[0].sub_especie;
+      ret.push(top[0].genero + '_' + top[0].nome + '_' + top[0].sub_especie);
+      top = await Genero.find({}).sort([
+        { n_pesquisas: 'DESC' },
+        { id: 'ASC' },
+      ]).limit(1);
+      ret.push(top[0].id);
+      top = await Familia.find({}).sort([
+        { n_pesquisas: 'DESC' },
+        { id: 'ASC' },
+      ]).limit(1);
+      ret.push(top[0].id);
+      top = await Ordem.find({}).sort([
+        { n_pesquisas: 'DESC' },
+        { id: 'ASC' },
+      ]).limit(1);
+      ret.push(top[0].id);
+      ret.push(tmp);
+
+      if(ret)
+        return res.send(ret);
+      else
         return res.serverError();
-    }
+
+
+    //res.send();
   }, 
 
   uploadCiclo: async function (req, res) {

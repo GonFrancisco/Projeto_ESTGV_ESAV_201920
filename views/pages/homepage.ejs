@@ -154,12 +154,20 @@
             success: function (data) {
                 console.log(data)
                 var listItems = $(".top-pesquisados-lista li");
+                let tipo = ['/especie/', '/genero/', '/familia/', '/ordem/'];
                 listItems.each(function(idx, li) {
                     let d = data[idx];
-                    let tmp = d.genero + ' ' + d.nome;
-                    let s = '/especie/' + d.genero + '_' + d.nome;
-                    $(li).html('<a href=' + '/especie/' + d.genero + '_' + d.nome + '>' + tmp + '</a>');
-
+                    console.log(d)
+                    if(idx === 0){
+                      let s = '/especie/' + d;
+                      console.log(d)
+                      console.log(data[data.length - 1])
+                      $(li).html('<a href=' + s + '>' + data[data.length - 1] + '</a>');
+                    } else {
+                      let s = tipo[idx] + d;
+                      $(li).html('<a href=' + s + '>' + d + '</a>');
+                    }
+                    
                 });
             },
             error: function (data) {
