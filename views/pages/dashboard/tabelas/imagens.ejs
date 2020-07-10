@@ -1,0 +1,227 @@
+<main id="dashboard_tabela_validar_imagem" :class="[heroHeightSet ? '' : 'uninitialized']" v-cloak>
+
+    <div class="uk-container uk-container-small sidebar-padding">
+      <ul class="uk-breadcrumb">
+        <li><a href="/dashboard">dashboard</a></li>
+        <li>
+          <a class="" type="button">tabelas</a>
+          <div uk-dropdown>
+            <ul class="uk-nav uk-dropdown-nav">
+              <li><a href="/dashboard/tabela/especies">Espécies</a></li>
+              <li><a href="/dashboard/tabela/imagens">Imagens</a></li>
+              <li><a href="/dashboard/tabela/comentarios">Comentários</a></li>
+              <li><a href="/dashboard/tabela/utilizadores">Utilizadores</a></li>
+            </ul>
+          </div>
+        </li>
+        <li><span>Imagens</span></li>
+      </ul>
+      <h3>Lista de imagens</h3>
+  
+      <table id="example1" class="display responsive nowrap uk-table uk-table-hover uk-table-divider uk-table-striped" style="width: 100%">
+        <thead>
+          <tr>
+            <% for (let col of colunas) { %>
+            <th><%=col%></th>
+            <% } %>
+  
+          </tr>
+        </thead>
+  
+      </table>
+
+    </div>
+
+                  <div id="modal-imagem" uk-modal>
+                    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+                        <button class="uk-modal-close-default" type="button" uk-close></button>
+                        <h2 id="modal-titulo" class="uk-modal-title">Adicionar foto</h2>
+
+                            <form id="add_foto" class="uk-grid-small" uk-grid action="/addFoto" method="post">
+                                <input id="flag" value="0" style="display: none">
+                                <label for="especie">Escolher a espécie:</label>
+                                <select id="especie" name="especie"></select><br>
+                                <input type="file" id="foto" name="foto" accept="image/*">
+                            </form>
+                            <p class="uk-text-right">
+                                <button class="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>
+                                <button onclick="fn_add_foto()" class="uk-button uk-button-primary"
+                                    type="button">Confirmar</button>
+                            </p>
+
+                    </div>
+  
+  
+  
+    <script>
+
+    data = [
+            { "data": "id" },
+            { "data": "id_especie" },
+            { "data": "nome_ficheiro" },
+            { "data": "foto_capa" },
+            { "data": "adicionada_por" },
+            { "data": "avaliacao" },
+            { "data": 'link',
+                render : function (data, type, row, meta) {
+                    return '<div uk-lightbox><a style="font-size: 1rem" class="" href="/images/galeria/especies/' + data + '">Ver Imagem</a></div>';
+                }    
+            }
+        ];
+  $(document).ready(function() {
+      var table = $('#example1').DataTable( {
+          ajax: {
+            url: '/dashboard/tabelas/imagens/data',
+            cache: true,
+            dataSrc: ""
+          },
+          "columns": data,
+          "oLanguage": {
+            "sLengthMenu": "Mostrar _MENU_ registos",
+            "sSearch": "Filtrar por:",
+            "sInfo": "A mostrar (_START_ a _END_) de <b>_TOTAL_</b> registos",
+            "oPaginate": {
+              "sNext": "Seguinte",
+              "sPrevious": "Anterior"
+              }
+          },
+          dom: '<"top"lBfr>tip',
+          buttons: [
+                    {
+                        text:      '<i class="btn-criar"></i>Criar',
+                        titleAttr: 'Criar',
+                        action: function ( e, dt, node, config ) {
+                                $('#modal-imagem').addClass('uk-open');
+                                $('#modal-imagem').show();
+                                $('#flag').val('0');
+                        }
+                    },
+                    {
+                        text:      '<i class="btn-editar"></i>Editar',
+                        titleAttr: 'Editar',
+                        action: function ( e, dt, node, config ) {
+
+                            var data = table.rows( { selected: true } ).data()[0];
+
+                                $('#modal-imagem').addClass('uk-open');
+                                $('#modal-imagem').show();
+                                $('#flag').val(data.id);
+
+                        },
+                        enabled: false
+                    },
+                    {
+                        text:      '<i class="btn-apagar"></i>Apagar',
+                        titleAttr: 'Apagar',
+                        action: function ( e, dt, node, config ) {
+
+                            let vi = table.rows( { selected: true } ).data()[0];
+                              let tmp = vi.id;
+                                  $.ajax({
+                                      type: 'post',
+                                      url: '/eliminarImagem',
+                                      data: {
+                                          id: vi.id,
+                                      },
+                                      success: function (response) {
+                                          
+                                          alert('A imagem foi removida com sucesso!');
+                                          table.ajax.reload();
+                                          return true;
+                                      },
+                                      error: function (response){
+                                          //window.open(JSON.stringify(response))
+                                          //confirm(JSON.stringify(response));
+                                      }
+                                  }); 
+
+                            
+                        },
+                        enabled: false
+                    },
+                ],
+                  select: 'single',
+      } );
+  
+  
+          table.on( 'select', function () {
+          var selectedRows = table.rows( { selected: true } ).count();
+          table.button( 1 ).enable( selectedRows === 1 );
+          table.button( 2 ).enable( selectedRows === 1 );
+          } );
+          table.on( 'deselect', function () {
+              table.button( 1 ).disable();
+              table.button( 2 ).disable();
+          } );
+  
+      });
+
+      $.ajax({
+            type: 'get',
+            url: '/allEspecies',
+            
+            success: function (data) {
+                data.forEach(element => $('#especie').append('<option value="' + element.id + '!' + element.nome_foto + '">' + element.genero + ' ' + element.nome + ' ' + element.sub_especie + '</option>'));
+            },
+            error: function (data) {
+                
+            },
+        });
+  
+      function fn_add_foto() {
+
+        var formfoto = new FormData();
+        var file = document.getElementById('foto').files[0];
+         
+ 
+        let val = $('#especie').val().split('!');
+
+        formfoto.append('id', val[0]);
+        formfoto.append('especie', val[1]);
+        formfoto.append('val', 1);
+        formfoto.append('foto', file);
+        if(file === undefined)
+            formfoto = "";
+        $.ajax({
+            type: 'POST',
+            url: '/addFoto',
+            data: formfoto,
+            processData: false,
+            contentType: false,
+            enctype: 'multipart/form-data',
+            success: function (data) {
+                setTimeout(function (){
+
+                    alert('A imagem foi adicionada.');
+                    $('#modal-imagem').hide();
+                    document.getElementById('foto').value = ""
+                    location.reload();
+                    return true;
+
+                }, 1000);
+                
+            },
+            error: function (data) {
+                alert('Ocorreu um erro ao adicionar a imagem, por favor tente novamente mais tarde.');
+                $('#modal-imagem').hide();
+                document.getElementById('foto').value =""
+            },
+        });
+        }
+
+  
+  // console.log(dataTable.columns())
+      var title;
+      var url;
+      title = 'Tabela de imagens';
+      url = '/dashboard/tabelas/imagens'
+      console.log(title);
+      console.log(url);
+      window.history.replaceState({
+        page: "another"
+      }, title, url);
+  
+    </script>
+  </main>
+  <%- /* Expose locals as `window.SAILS_LOCALS` :: */ exposeLocalsToBrowser() %>
+  

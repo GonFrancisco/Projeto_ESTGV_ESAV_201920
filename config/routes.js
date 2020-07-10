@@ -28,6 +28,10 @@ module.exports.routes = {
     '/ordem/:id': 'EspecieController.search',
 
     'post /addFoto': 'FotoController.addFoto',
+    'post /getEveryImage': 'FotoController.getEveryImage',
+    'post /eliminarImagem': 'FotoController.apagar',
+    'post /validarImagem': 'FotoController.validate',
+    'get /allEspecies': 'EspecieController.getAll',
 
     // sugestões
     'post /sugerir': 'SugestoesController.add',
@@ -53,6 +57,10 @@ module.exports.routes = {
     '/dashboard/tabelas/novostermos/data' : 'NovosTermosController.toJSON',
     '/dashboard/tabelas/sugestoes' : 'SugestoesController.openTabela',
     '/dashboard/tabelas/sugestoes/data' : 'SugestoesController.toJSON',
+    '/dashboard/tabelas/imagens' : 'FotoController.openTabela',
+    '/dashboard/tabelas/imagens/data' : 'FotoController.toJSON',
+    '/dashboard/tabelas/validar_imagens' : 'FotoController.openTabelaToValidate',
+    '/dashboard/tabelas/validar_imagens/data' : 'FotoController.toJSONToValidate',
 
     'post /criarEspecie': 'EspecieController.addNew',
     'post /editarEspecie': 'EspecieController.edit',

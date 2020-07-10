@@ -459,7 +459,10 @@ module.exports = {
         { nome: 'ASC' },
       ]).limit(1);
       var tmp = top[0].genero + ' ' + top[0].nome + ' ' + top[0].sub_especie;
-      ret.push(top[0].genero + '_' + top[0].nome + '_' + top[0].sub_especie);
+      if(top[0].sub_especie == '')
+        ret.push(top[0].genero + '_' + top[0].nome);
+      else
+        ret.push(top[0].genero + '_' + top[0].nome + '_' + top[0].sub_especie);
       top = await Genero.find({}).sort([
         { n_pesquisas: 'DESC' },
         { id: 'ASC' },
@@ -530,6 +533,15 @@ module.exports = {
         }
   },
 
-  
+  getAll: async function (req, res) {
+      var ret = await Especie.find({select:['id', 'nome', 'genero', 'sub_especie']});
+      if(ret.length > 0){
+        await ret.forEach(element => element.nome_foto = element.genero + '_' + element.nome + '_' + element.sub_especie);
+
+        return res.send(ret);
+      }
+        return res.serverError();
+    }
+        
 
 }

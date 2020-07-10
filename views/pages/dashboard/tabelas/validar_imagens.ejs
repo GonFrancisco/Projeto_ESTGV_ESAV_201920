@@ -1,0 +1,156 @@
+<main id="dashboard_tabela_validar_imagem" :class="[heroHeightSet ? '' : 'uninitialized']" v-cloak>
+
+    <div class="uk-container uk-container-small sidebar-padding">
+      <ul class="uk-breadcrumb">
+        <li><a href="/dashboard">dashboard</a></li>
+        <li>
+          <a class="" type="button">tabelas</a>
+          <div uk-dropdown>
+            <ul class="uk-nav uk-dropdown-nav">
+              <li><a href="/dashboard/tabela/especies">Espécies</a></li>
+              <li><a href="/dashboard/tabela/imagens">Imagens</a></li>
+              <li><a href="/dashboard/tabela/comentarios">Comentários</a></li>
+              <li><a href="/dashboard/tabela/utilizadores">Utilizadores</a></li>
+            </ul>
+          </div>
+        </li>
+        <li><span>Validar imagens</span></li>
+      </ul>
+      <h3>Lista de imagens por validar</h3>
+  
+      <table id="example1" class="display responsive nowrap uk-table uk-table-hover uk-table-divider uk-table-striped" style="width: 100%">
+        <thead>
+          <tr>
+            <% for (let col of colunas) { %>
+            <th><%=col%></th>
+            <% } %>
+  
+          </tr>
+        </thead>
+  
+      </table>
+
+    </div>
+  
+    <script>
+
+    data = [
+            { "data": "id" },
+            { "data": "id_especie" },
+            { "data": "nome_ficheiro" },
+            { "data": "adicionada_por" },
+            { "data": 'link',
+                render : function (data, type, row, meta) {
+                    return '<div uk-lightbox><a style="font-size: 1rem" class="" href="/images/galeria/especies/' + data + '">Ver Imagem</a></div>';
+                }    
+            }
+        ];
+  $(document).ready(function() {
+      var table = $('#example1').DataTable( {
+          ajax: {
+            url: '/dashboard/tabelas/validar_imagens/data',
+            cache: true,
+            dataSrc: ""
+          },
+          "columns": data,
+          "oLanguage": {
+            "sLengthMenu": "Mostrar _MENU_ registos",
+            "sSearch": "Filtrar por:",
+            "sInfo": "A mostrar (_START_ a _END_) de <b>_TOTAL_</b> registos",
+            "oPaginate": {
+              "sNext": "Seguinte",
+              "sPrevious": "Anterior"
+              }
+          },
+          dom: '<"top"lBfr>tip',
+                  buttons: [
+                      {
+                          text:      '<i class="btn-validar"></i>Validar',
+                          titleAttr: 'Validar',
+                          action: function ( e, dt, node, config ) {
+                            var data = table.rows( { selected: true } ).data()[0];
+                            $.ajax({
+                                type: 'post',
+                                url: '/validarImagem',
+                                data: {
+                                    id: data.id,
+                                },
+                                success: function (response) {
+                                    setTimeout(function (){
+                                        alert('A imagem foi validada com sucesso!\nPoderá agora ser consultada na tabela "Imagens"!');
+                                        table.ajax.reload();
+                                        return true;
+                                    }, 300);
+                                },
+                                error: function (response){
+                                    //window.open(JSON.stringify(response))
+                                    //confirm(JSON.stringify(response));
+                                }
+                            }); 
+                          },
+                          enabled: false
+                      },
+                      {
+                          text:      '<i class="btn-eliminar"></i>Remover',
+                          titleAttr: 'Remover',
+                          action: function ( e, dt, node, config ) {
+  
+                              let vi = table.rows( { selected: true } ).data()[0];
+                              let tmp = vi.id;
+                                  $.ajax({
+                                      type: 'post',
+                                      url: '/eliminarImagem',
+                                      data: {
+                                          id: vi.id,
+                                      },
+                                      success: function (response) {
+                                        setTimeout(function (){
+                                          alert('A imagem foi removida com sucesso!');
+                                          table.ajax.reload();
+                                          return true;
+                                        }, 300);
+                                      },
+                                      error: function (response){
+                                          //window.open(JSON.stringify(response))
+                                          //confirm(JSON.stringify(response));
+                                      }
+                                  }); 
+
+                          },
+                          enabled: false
+                      },
+                  ],
+                  select: 'single',
+      } );
+  
+  
+          table.on( 'select', function () {
+          var selectedRows = table.rows( { selected: true } ).count();
+          table.button( 0 ).enable( selectedRows === 1 );
+          table.button( 1 ).enable( selectedRows === 1 );
+          } );
+          table.on( 'deselect', function () {
+              table.button( 0 ).disable();
+              table.button( 1 ).disable();
+          } );
+  
+      });
+  
+  
+
+  
+  // console.log(dataTable.columns())
+      var title;
+      var url;
+      title = 'Tabela de imagens por validar';
+      url = '/dashboard/tabelas/validar_imagens'
+      console.log(title);
+      console.log(url);
+      window.history.replaceState({
+        page: "another"
+      }, title, url);
+  
+    </script>
+  </main>
+  <%- /* Expose locals as `window.SAILS_LOCALS` :: */ exposeLocalsToBrowser() %>
+  

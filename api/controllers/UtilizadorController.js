@@ -6,6 +6,7 @@
  */
 
 const bcrypt = require('bcrypt');
+var MailController = require('./MailController');
 
 module.exports = {
 
@@ -122,6 +123,7 @@ module.exports = {
                     //if (err.code == 'EEXIST') // console.log(folder_name + ' ja existe'); // ignore the error if the folder already exists
                     //else console.log(folder_name + ' erro inesperado'); // something else went wrong
                 //} else console.log(folder_name + ' criada com sucesso'); // successfully created folder
+            MailController.sendEmail(data.mail, 'Nova conta na plataforma "Flora ESAV"', 'Foi criada com este email uma conta na plataforma "Flora ESAV".\n\n');
             return res.ok();
             });
         });

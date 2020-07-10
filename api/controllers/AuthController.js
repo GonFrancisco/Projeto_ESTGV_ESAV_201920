@@ -7,6 +7,8 @@
 
 const passport = require('passport');
 var fs = require('fs');
+var MailController = require('./MailController');
+
  module.exports = {
 
     // OPEN VIEWS
@@ -83,6 +85,7 @@ var fs = require('fs');
                         //else console.log(folder_name + ' erro inesperado'); // something else went wrong
                     //} else console.log(folder_name + ' criada com sucesso'); // successfully created folder
                 });
+                MailController.sendEmail(data.mail, 'Nova conta na plataforma "Flora ESAV"', 'Foi criada com este email uma conta na plataforma "Flora ESAV".\n\n');
                 return res.ok();
             });
         });

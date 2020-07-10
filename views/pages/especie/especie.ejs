@@ -37,7 +37,20 @@
                     </div>
                         <div class="uk-child-width-1-2@s" uk-grid style="margin-top: 20px;">
                             <div>
-                                <a uk-icon="icon: album; ratio: 1">Ver todas </a>
+                                <a href="#modal-imagens" uk-icon="icon: album; ratio: 1" uk-toggle>Ver todas </a>
+                            </div>
+                            <div id="modal-imagens" class="uk-modal-container" uk-modal>
+                                <div class="uk-modal-dialog uk-modal-body" uk-overflow-auto>
+                                    <button class="uk-modal-close-default" type="button" uk-close></button>
+                                    <h2 class="uk-modal-title">Imagens de <%= result.genero + ' ' + result.nome + ' ' + result.sub_especie %></h2>
+                                    <div uk-lightbox="animation: slide">
+
+                                        <div id="every-image" class="uk-child-width-1-3@s" uk-grid="masonry: true">
+                                            
+                                        </div>
+
+                                    </div>
+                                </div>
                             </div>
                             <div> 
                                 <a href="#modal-add-foto" uk-toggle uk-icon="icon: plus-circle; ratio: 1">Adicionar foto </a>
@@ -463,6 +476,32 @@
                 },
             });
         }
+
+        let id = '<%= result.id_especie %>';
+        let path = "<%= result.genero + '_' + result.nome + '_' + result.sub_especie %>"
+
+        $.ajax({
+                type: 'post',
+                url: '/getEveryImage',
+                data: id,
+                success: function (response) {
+                    console.log(response)
+                    for(pic of response){
+                        let url = "/images/galeria/especies/" + path + '/' + pic.nome_ficheiro;
+                        $('#every-image').append(
+                            '<div><a href=' + url + ' data-caption=' + pic.nome_ficheiro + '><img style="margin: 0 auto" class="uk-card uk-card-default uk-card-pages uk-flex uk-flex-center uk-flex-middle" style="max-height: 160px" src=' + url + ' alt=""></a></div>'
+                        );
+                    }
+                    return true;
+                },
+   
+                error: function (response){
+                    //window.open(JSON.stringify(response))
+                    //confirm(JSON.stringify(response));
+                }
+            }); 
+
+        
 
         console.log(window.location);
 

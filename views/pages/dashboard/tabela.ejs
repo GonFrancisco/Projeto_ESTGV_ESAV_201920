@@ -227,6 +227,19 @@
   <script>
 var data = <%- JSON.stringify(data) %>;
 var nome_tabela = '<%- nome %>';
+if (nome_tabela === 'validar_imagens')
+    data = [
+            { "data": "id" },
+            { "data": "id_especie" },
+            { "data": "nome_ficheiro" },
+            { "data": "adicionada_por" },
+            { "data": 'link',
+                render : function (data, type, row, meta) {
+                    // return '<a style="font-size: 1rem" class="" href="#modal-ver" uk-toggle>Ver</a>'+'<div id="modal-ver" class="uk-modal-container uk-flex-top" uk-modal>'+'<div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">'+'<button class="uk-modal-close-default" type="button" uk-close></button>'+'<img src="/images/galeria/especies/' + data + '">'+'</div>'+'</div>';
+                    return '<div uk-lightbox><a style="font-size: 1rem" class="" href="/images/galeria/especies/' + data + '">Ver Imagem</a></div>';
+                }    
+            }
+        ];
 $(document).ready(function() {
     var table = $('#example1').DataTable( {
         ajax: {
@@ -713,8 +726,6 @@ $(document).ready(function() {
     var url;
     title = 'Tabela de <%= nome %>';
     url = '/dashboard/tabelas/<%= nome %>'
-    console.log(title);
-    console.log(url);
     window.history.replaceState({
       page: "another"
     }, title, url);
